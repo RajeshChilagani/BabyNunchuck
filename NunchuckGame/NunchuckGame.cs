@@ -54,6 +54,9 @@ namespace NunchuckGame
                 texture.Height * scale / 2);
             player.Initialize(texture, playerPosition, scale);
 
+            Pickup.PickupTexture = Content.Load<Texture2D>("player");
+            Pickup.PickupScale = 0.3f;
+
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
         }
@@ -78,8 +81,9 @@ namespace NunchuckGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+
             // Game state is updated second and may override or ignore user input
-            gameState.Update(gameTime, ref player);
+            gameState.Update(gameTime, GraphicsDevice.Viewport.TitleSafeArea, ref player);
 
             // The player gets moved
             player.Update(gameTime);

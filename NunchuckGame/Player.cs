@@ -25,7 +25,7 @@ namespace NunchuckGame
 
         public Player()
         {
-            DefaultVelocity = Vector2.Multiply(Vector2.One, 15f);
+            DefaultVelocity = Vector2.Multiply(Vector2.Zero, 15f);
         }
 
         public void Initialize(Texture2D texture, Vector2 position, float scale)
