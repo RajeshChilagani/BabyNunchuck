@@ -44,30 +44,28 @@ namespace NunchuckGame
             {
                 TimeToSpawn = (float)random.Next(500, 2501) / 1000f;
 
-                // Find whether the object will be spawned from above (0), the right (1), below (2), or the left (3)
-                int start = random.Next(0, 4);
+                // Find whether the object will be spawned from above, the right, below, or the left
+                int start = random.Next(0, 2 * Pickup.PickupWidth() + 2 * Pickup.PickupHeight() + 1);
                 int x, y;
-                switch(start)
+                if (start < Pickup.PickupWidth())
                 {
-                    case 0:
-                        y = -(Pickup.PickupHeight());
-                        x = random.Next(-(Pickup.PickupWidth()), playArea.Width);
-                        break;
-                    case 1:
-                        x = playArea.Width;
-                        y = random.Next(-(Pickup.PickupHeight()), playArea.Height);
-                        break;
-                    case 2:
-                        y = playArea.Height;
-                        x = random.Next(-(Pickup.PickupWidth()), playArea.Width);
-                        break;
-                    case 3:
-                        x = -(Pickup.PickupWidth());
-                        y = random.Next(-(Pickup.PickupHeight()), playArea.Height);
-                        break;
-                    default:
-                        x = y = 0;
-                        break;
+                    y = -(Pickup.PickupHeight());
+                    x = random.Next(-(Pickup.PickupWidth()), playArea.Width);
+                }
+                else if (start < Pickup.PickupWidth() + Pickup.PickupHeight())
+                {
+                    x = playArea.Width;
+                    y = random.Next(-(Pickup.PickupHeight()), playArea.Height);
+                }
+                else if (start < Pickup.PickupWidth() * 2 + Pickup.PickupHeight())
+                {
+                    y = playArea.Height;
+                    x = random.Next(-(Pickup.PickupWidth()), playArea.Width);
+                }
+                else
+                {
+                    x = -(Pickup.PickupWidth());
+                    y = random.Next(-(Pickup.PickupHeight()), playArea.Height);
                 }
 
                 Vector2 position = new Vector2(x, y);

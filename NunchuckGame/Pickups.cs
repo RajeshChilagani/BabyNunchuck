@@ -42,7 +42,7 @@ namespace NunchuckGame
             Random random = new Random();
 
             direction.Normalize();
-            double angle = Math.Atan(direction.Y / direction.X) + (random.Next(-40, 40) * Math.PI) / 180;
+            double angle = Math.Atan2(direction.Y, direction.X) + (random.Next(-40, 40) * Math.PI) / 180;
             direction.X = (float)Math.Cos(angle);
             direction.Y = (float)Math.Sin(angle);
 
