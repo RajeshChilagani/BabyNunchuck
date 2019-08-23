@@ -12,10 +12,12 @@ namespace NunchuckGame
         private List<Pickup> ActivePickups;
         private List<Pickup> InactivePickups;
         private bool IsGameOver;
+        private Random random;
         double TimeToSpawn;
 
         public GameState()
         {
+            random = new Random();
             TimeToSpawn = 0f;
             Score = 0;
             ActivePickups = new List<Pickup>();
@@ -40,9 +42,7 @@ namespace NunchuckGame
             TimeToSpawn -= deltaTime;
             if (TimeToSpawn <= 0)
             {
-                Random random = new Random();
-
-                TimeToSpawn = random.Next(0, 1);
+                TimeToSpawn = (float)random.Next(500, 2501) / 1000f;
 
                 // Find whether the object will be spawned from above (0), the right (1), below (2), or the left (3)
                 int start = random.Next(0, 4);
@@ -71,7 +71,7 @@ namespace NunchuckGame
                 }
 
                 Vector2 position = new Vector2(x, y);
-                Vector2 direction = new Vector2((playArea.Width / 2) - x, (playArea.Height / 2) - y);
+                Vector2 direction = new Vector2((playArea.Width / 2) - (x + Pickup.PickupWidth() / 2), (playArea.Height / 2) - (y + Pickup.PickupHeight() / 2));
                 SmallPointsPickup pickup = new SmallPointsPickup(position, direction, 100f);
 
                 InactivePickups.Add(pickup);

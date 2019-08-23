@@ -42,14 +42,15 @@ namespace NunchuckGame
             Random random = new Random();
 
             direction.Normalize();
-            double angle = Math.Acos(direction.X / direction.Y) + (random.Next(-45, 45) * Math.PI) / 180;
-            //direction.X = (float)Math.Cos(angle);
-            //direction.Y = (float)Math.Cos(angle);
+            double angle = Math.Atan(direction.Y / direction.X) + (random.Next(-40, 40) * Math.PI) / 180;
+            direction.X = (float)Math.Cos(angle);
+            direction.Y = (float)Math.Sin(angle);
 
             Velocity = Vector2.Multiply(direction, speed);
-            Rotation = (float)((angle * Math.PI) / 180);
+            Rotation = 0;
 
-            SpinSpeed = 0f;
+            //SpinSpeed = (float)random.Next(-1000, 1000) / 1000f;
+            SpinSpeed = 0;
             Scale = Pickup.PickupScale;
         }
 
