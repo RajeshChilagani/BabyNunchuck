@@ -70,7 +70,7 @@ namespace NunchuckGame
 
                 Vector2 position = new Vector2(x, y);
                 Vector2 direction = new Vector2((playArea.Width / 2) - (x + Pickup.PickupWidth() / 2), (playArea.Height / 2) - (y + Pickup.PickupHeight() / 2));
-                SmallPointsPickup pickup = new SmallPointsPickup(position, direction, 100f);
+                TempPickup pickup = new TempPickup(position, direction, 100f);
 
                 InactivePickups.Add(pickup);
             }
@@ -103,6 +103,20 @@ namespace NunchuckGame
                 {
                     InactivePickups.RemoveAt(count);
                     continue;
+                }
+
+                for (int i = count + 1; i < InactivePickups.Count; i++)
+                {
+                    if (InactivePickups[count].IsColliding(InactivePickups[i]))
+                    {
+                        Pickup temp1 = InactivePickups[count];
+                        Pickup temp2 = InactivePickups[i];
+
+                        Pickup.Collide(ref temp1, ref temp2);
+
+                        InactivePickups[count] = temp1;
+                        InactivePickups[i] = temp2;
+                    }
                 }
 
                 count++;

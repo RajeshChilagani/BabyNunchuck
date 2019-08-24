@@ -4,19 +4,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NunchuckGame
 {
-    abstract class Pickup
+    abstract class Pickup : Sprite
     {
         protected double Duration;
         protected double RemainingDuration;
         protected int ScoreChange;
         protected bool AffectsPlayer;
         protected bool EndsGame;
-        protected Texture2D Texture;
-        protected Vector2 Position;
-        protected Vector2 Velocity;
         protected float Rotation;
         protected float SpinSpeed;
-        protected float Scale;
 
         // Textures for the various pickups
         static public Texture2D PickupTexture;
@@ -106,6 +102,30 @@ namespace NunchuckGame
             spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, Vector2.Zero, Scale,
                 SpriteEffects.None, 0f);
         }
+
+        static public void Collide(ref Pickup pickup1, ref Pickup pickup2)
+        {
+            Vector2 tempVelocity1 = pickup1.Velocity;
+            Vector2 tempVelocity2 = pickup2.Velocity;
+
+            float magnitude = (pickup1.Velocity.Length() + pickup2.Velocity.Length()) / 2f;
+            if (tempVelocity1 == Vector2.Zero)
+            {
+                tempVelocity2.Normalize();
+                tempVelocity1 = tempVelocity2 = Vector2.Multiply(tempVelocity2, magnitude);
+            }
+            else if (tempVelocity2 == Vector2.Zero)
+            {
+                tempVelocity1.Normalize();
+                tempVelocity2 = tempVelocity1 = Vector2.Multiply(tempVelocity1, magnitude);
+            }
+
+            tempVelocity1.Normalize();
+            tempVelocity2.Normalize();
+
+            pickup1.Velocity = Vector2.Multiply(tempVelocity2, magnitude);
+            pickup2.Velocity = Vector2.Multiply(tempVelocity1, magnitude);
+        }
     }
 
     class SmallPointsPickup : Pickup
@@ -114,6 +134,37 @@ namespace NunchuckGame
         {
             ScoreChange = 1;
             Texture = Pickup.PickupTexture;
+        }
+    }
+
+    class TempPickup : Pickup
+    {
+        private float SlowRate;
+        private float Magnitude;
+
+        public TempPickup(Vector2 position, Vector2 direction, float speed) : base(position, direction, speed)
+        {
+            ScoreChange = 1;
+            Texture = Pickup.PickupTexture;
+            Magnitude = speed;
+            SlowRate = 10f;
+        }
+
+        public override void Update(double secsElapsed)
+        {
+            Rotation = (Rotation + (float)secsElapsed * SpinSpeed) % 360;
+
+            if (Magnitude > 0f)
+            {
+                Velocity.Normalize();
+                Magnitude -= (float)(SlowRate * secsElapsed);
+                if (Magnitude < 0f)
+                    Magnitude = 0f;
+
+                Velocity = Vector2.Multiply(Velocity, Magnitude);
+            }
+
+            Position += Vector2.Multiply(Velocity, (float)(secsElapsed));
         }
     }
 

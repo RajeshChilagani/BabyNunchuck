@@ -55,7 +55,7 @@ namespace NunchuckGame
             player.Initialize(texture, playerPosition, scale);
 
             Pickup.PickupTexture = Content.Load<Texture2D>("player");
-            Pickup.PickupScale = 0.15f;
+            Pickup.PickupScale = 0.03f;
 
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
