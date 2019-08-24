@@ -48,37 +48,41 @@ namespace NunchuckGame
         protected bool IsTouchingLeft(Sprite sprite)
         {
 
-            return this.Rectangle.Right + this.Velocity.X > sprite.Rectangle.Left &&
+            return this.Rectangle.Right > sprite.Rectangle.Left &&
                     this.Rectangle.Left < sprite.Rectangle.Left &&
                     this.Rectangle.Bottom > sprite.Rectangle.Top &&
-                    this.Rectangle.Top < sprite.Rectangle.Bottom;
+                    this.Rectangle.Top < sprite.Rectangle.Bottom &&
+                    this.Velocity.X > 0;
         }
 
         protected bool IsTouchingRight(Sprite sprite)
         {
 
-            return this.Rectangle.Left + this.Velocity.X < sprite.Rectangle.Right &&
+            return this.Rectangle.Left < sprite.Rectangle.Right &&
                     this.Rectangle.Right > sprite.Rectangle.Right &&
                     this.Rectangle.Bottom > sprite.Rectangle.Top &&
-                    this.Rectangle.Top < sprite.Rectangle.Bottom;
+                    this.Rectangle.Top < sprite.Rectangle.Bottom &&
+                    this.Velocity.X < 0;
         }
 
         protected bool IsTouchingTop(Sprite sprite)
         {
 
-            return this.Rectangle.Bottom + this.Velocity.Y > sprite.Rectangle.Top &&
+            return this.Rectangle.Bottom > sprite.Rectangle.Top &&
                     this.Rectangle.Top < sprite.Rectangle.Top &&
                     this.Rectangle.Right > sprite.Rectangle.Left &&
-                    this.Rectangle.Left < sprite.Rectangle.Right;
+                    this.Rectangle.Left < sprite.Rectangle.Right &&
+                    this.Velocity.Y > 0;
         }
 
         protected bool IsTouchingBottom(Sprite sprite)
         {
 
-            return this.Rectangle.Top + this.Velocity.Y < sprite.Rectangle.Bottom &&
+            return this.Rectangle.Top < sprite.Rectangle.Bottom &&
                     this.Rectangle.Bottom > sprite.Rectangle.Bottom &&
                     this.Rectangle.Right > sprite.Rectangle.Left &&
-                    this.Rectangle.Left < sprite.Rectangle.Right;
+                    this.Rectangle.Left < sprite.Rectangle.Right &&
+                    this.Velocity.Y < 0;
         }
 
         public bool IsColliding(Sprite sprite)

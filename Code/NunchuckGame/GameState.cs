@@ -44,33 +44,50 @@ namespace NunchuckGame
             {
                 TimeToSpawn = (float)random.Next(500, 2501) / 1000f;
 
-                // Find whether the object will be spawned from above, the right, below, or the left
-                int start = random.Next(0, 2 * Pickup.PickupWidth() + 2 * Pickup.PickupHeight() + 1);
-                int x, y;
-                if (start < Pickup.PickupWidth())
-                {
-                    y = -(Pickup.PickupHeight());
-                    x = random.Next(-(Pickup.PickupWidth()), playArea.Width);
-                }
-                else if (start < Pickup.PickupWidth() + Pickup.PickupHeight())
-                {
-                    x = playArea.Width;
-                    y = random.Next(-(Pickup.PickupHeight()), playArea.Height);
-                }
-                else if (start < Pickup.PickupWidth() * 2 + Pickup.PickupHeight())
-                {
-                    y = playArea.Height;
-                    x = random.Next(-(Pickup.PickupWidth()), playArea.Width);
-                }
-                else
-                {
-                    x = -(Pickup.PickupWidth());
-                    y = random.Next(-(Pickup.PickupHeight()), playArea.Height);
-                }
+                Pickup pickup;
+                bool isColliding = false;
 
-                Vector2 position = new Vector2(x, y);
-                Vector2 direction = new Vector2((playArea.Width / 2) - (x + Pickup.PickupWidth() / 2), (playArea.Height / 2) - (y + Pickup.PickupHeight() / 2));
-                TempPickup pickup = new TempPickup(position, direction, 100f);
+                do
+                {
+                    // Find whether the object will be spawned from above, the right, below, or the left
+                    int start = random.Next(0, 2 * Pickup.PickupWidth() + 2 * Pickup.PickupHeight() + 1);
+                    int x, y;
+                    if (start < Pickup.PickupWidth())
+                    {
+                        y = -(Pickup.PickupHeight());
+                        x = random.Next(-(Pickup.PickupWidth()), playArea.Width);
+                    }
+                    else if (start < Pickup.PickupWidth() + Pickup.PickupHeight())
+                    {
+                        x = playArea.Width;
+                        y = random.Next(-(Pickup.PickupHeight()), playArea.Height);
+                    }
+                    else if (start < Pickup.PickupWidth() * 2 + Pickup.PickupHeight())
+                    {
+                        y = playArea.Height;
+                        x = random.Next(-(Pickup.PickupWidth()), playArea.Width);
+                    }
+                    else
+                    {
+                        x = -(Pickup.PickupWidth());
+                        y = random.Next(-(Pickup.PickupHeight()), playArea.Height);
+                    }
+
+                    Vector2 position = new Vector2(x, y);
+                    Vector2 direction = new Vector2((playArea.Width / 2) - (x + Pickup.PickupWidth() / 2), (playArea.Height / 2) - (y + Pickup.PickupHeight() / 2));
+                    pickup = new SmallPointsPickup(position, direction, 100f);
+
+                    foreach (Pickup other in InactivePickups)
+                    {
+                        isColliding = false;
+                        if (pickup.IsColliding(other))
+                        {
+                            isColliding = true;
+                            break;
+                        }
+                    }
+                }
+                while (isColliding);
 
                 InactivePickups.Add(pickup);
             }
@@ -105,7 +122,7 @@ namespace NunchuckGame
                     continue;
                 }
 
-                for (int i = count + 1; i < InactivePickups.Count; i++)
+                for (int i = 0; i < InactivePickups.Count; i++)
                 {
                     if (InactivePickups[count].IsColliding(InactivePickups[i]))
                     {
