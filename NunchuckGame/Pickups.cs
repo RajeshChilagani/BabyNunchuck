@@ -70,6 +70,12 @@ namespace NunchuckGame
             Position += Vector2.Multiply(Velocity, (float)(secsElapsed));
         }
 
+        public bool IsOutOfBounds(Rectangle bounds)
+        {
+            return (Position.X < -(Pickup.PickupWidth() << 2) || Position.X > bounds.Width + Pickup.PickupWidth() ||
+                Position.Y < -(Pickup.PickupHeight() << 2) || Position.Y > bounds.Height + Pickup.PickupHeight());
+        }
+
         public double GetRemainingDuration()
         {
             return RemainingDuration;

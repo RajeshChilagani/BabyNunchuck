@@ -97,6 +97,14 @@ namespace NunchuckGame
             while (count < InactivePickups.Count)
             {
                 InactivePickups[count].Update(deltaTime);
+
+                // Remove the object if it has left the screen
+                if (InactivePickups[count].IsOutOfBounds(playArea))
+                {
+                    InactivePickups.RemoveAt(count);
+                    continue;
+                }
+
                 count++;
             }
         }
