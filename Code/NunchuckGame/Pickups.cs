@@ -50,11 +50,7 @@ namespace NunchuckGame
             Scale = Pickup.PickupScale;
         }
 
-        public virtual void Update(ref Player player)
-        {
-
-        }
-
+       
         public void UpdateDuration(double secsElapsed)
         {
             RemainingDuration -= secsElapsed;
@@ -179,10 +175,7 @@ namespace NunchuckGame
             Texture = Pickup.PickupTexture;
         }
 
-        public override void Update(ref Player player)
-        {
-            player.SetSpeed(1.5f);
-        }
+      
     }
 
     class FreezePickup : Pickup
@@ -195,10 +188,7 @@ namespace NunchuckGame
             Texture = Pickup.PickupTexture;
         }
 
-        public override void Update(ref Player player)
-        {
-            player.SetSpeed(0f);
-        }
+     
     }
 
     class SlowPickup : Pickup
@@ -211,10 +201,7 @@ namespace NunchuckGame
             Texture = Pickup.PickupTexture;
         }
 
-        public override void Update(ref Player player)
-        {
-            player.SetSpeed(0.5f);
-        }
+       
     }
 
     //class LockTurningPickup : Pickup

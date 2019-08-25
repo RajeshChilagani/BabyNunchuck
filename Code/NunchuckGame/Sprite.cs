@@ -14,7 +14,7 @@ namespace NunchuckGame
 
         public Vector2 Position;
         public Vector2 Velocity;
-        protected float Scale;
+        protected float Scale=1;
         public Color color = Color.White;
         public bool isTouching = false;
 
@@ -28,7 +28,7 @@ namespace NunchuckGame
 
         public Sprite()
         {
-
+            
         }
 
         public void Initialize(Texture2D texture)

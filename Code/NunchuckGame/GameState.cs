@@ -8,10 +8,10 @@ namespace NunchuckGame
     class GameState
     {
         private int Score;
-        private SpriteFont font;
+        public SpriteFont font;
         private List<Pickup> ActivePickups;
         private List<Pickup> InactivePickups;
-        private bool IsGameOver;
+        public bool IsGameOver;
         private Random random;
         double TimeToSpawn;
 
@@ -34,10 +34,10 @@ namespace NunchuckGame
                 IsGameOver = true;
         }
 
-        public void Update(GameTime gameTime, Rectangle playArea, ref Player player)
+        public void Update(GameTime gameTime, Rectangle playArea, ref MainPlayer player)
         {
             double deltaTime = gameTime.ElapsedGameTime.TotalSeconds;
-            player.SetSpeed(1f);
+           
 
             TimeToSpawn -= deltaTime;
             if (TimeToSpawn <= 0)
@@ -88,7 +88,7 @@ namespace NunchuckGame
 
                 // Update the player from the effects of the pickup
                 if (ActivePickups[count].GetAffectsPlayer())
-                    ActivePickups[count].Update(ref player);
+                    //ActivePickups[count].Update(ref player);
 
                 count++;
             }
@@ -119,6 +119,20 @@ namespace NunchuckGame
                     }
                 }
 
+                if (player.IsColliding(InactivePickups[count]))
+                {
+                    if (player.Boosting)
+                    {
+                        AddActivePickup(InactivePickups[count]);
+                        InactivePickups.RemoveAt(count);
+                        continue;
+                    }
+                    else
+                    {
+                        IsGameOver = true;
+                    }
+                }
+
                 count++;
             }
         }
@@ -130,18 +144,15 @@ namespace NunchuckGame
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            string score = "Score: " + Score.ToString();
-            spriteBatch.DrawString(font, score, new Vector2(10, 10), Color.Black);
-
-            foreach(Pickup pickup in InactivePickups)
+            foreach (Pickup pickup in InactivePickups)
             {
                 pickup.Draw(spriteBatch);
             }
+            string score = "Score: " + Score.ToString();
+            spriteBatch.DrawString(font, score, new Vector2(10, 10), Color.Black);
 
-            if (IsGameOver)
-            {
-                spriteBatch.DrawString(font, "Game Over", new Vector2(10, 40), Color.Red);
-            }
+
+            
         }
     }
 }

@@ -11,8 +11,10 @@ namespace NunchuckGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Player player;
+        
         GameState gameState;
+        MainPlayer mainChar;
+        
 
         public NunchuckGame()
         {
@@ -28,8 +30,10 @@ namespace NunchuckGame
         /// </summary>
         protected override void Initialize()
         {
-            player = new Player();
+            
+            
             gameState = new GameState();
+           
             //gameState.AddActivePickup(new SpeedPickup());
 
             base.Initialize();
@@ -44,21 +48,19 @@ namespace NunchuckGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Texture2D texture = Content.Load<Texture2D>("player");
+            Texture2D mainTexture = this.Content.Load<Texture2D>("pika.png");
             float scale = 0.3f;
 
             // Load the player resources
-            Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + 
-                GraphicsDevice.Viewport.TitleSafeArea.Width / 2 - texture.Width * scale / 2, 
-                GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2 -
-                texture.Height * scale / 2);
-            player.Initialize(texture, playerPosition, scale);
+            mainChar = new MainPlayer(new Vector2(GraphicsDevice.Viewport.Width / 2 - mainTexture.Width / 2, GraphicsDevice.Viewport.Height / 2-mainTexture.Height/2), new Vector2(50));
 
             Pickup.PickupTexture = Content.Load<Texture2D>("player");
             Pickup.PickupScale = 0.03f;
+            mainChar.LoadTexture(mainTexture);
 
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
+            
         }
 
         /// <summary>
@@ -83,11 +85,15 @@ namespace NunchuckGame
 
 
             // Game state is updated second and may override or ignore user input
-            gameState.Update(gameTime, GraphicsDevice.Viewport.TitleSafeArea, ref player);
-
+            if(!gameState.IsGameOver)
+            {
+                gameState.Update(gameTime, GraphicsDevice.Viewport.TitleSafeArea, ref mainChar);
+                mainChar.controller(gameTime, GraphicsDevice.Viewport);
+            }
+          
             // The player gets moved
-            player.Update(gameTime);
-
+           
+          
             base.Update(gameTime);
         }
 
@@ -103,9 +109,17 @@ namespace NunchuckGame
             spriteBatch.Begin();
 
             // Draw the Player
-            player.Draw(spriteBatch);
-
-            gameState.Draw(spriteBatch);
+            mainChar.Draw(spriteBatch);
+            if (!gameState.IsGameOver)
+            {  
+               gameState.Draw(spriteBatch);
+            }
+            else
+            {
+                spriteBatch.DrawString(gameState.font, "Game Over", new Vector2(10, 40), Color.Red);
+            }
+           
+            
 
             // Stop drawing
             spriteBatch.End();
