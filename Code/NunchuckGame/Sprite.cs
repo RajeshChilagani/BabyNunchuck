@@ -22,7 +22,7 @@ namespace NunchuckGame
         {
             get
             {
-                return new Rectangle((int)Position.X + Texture.Width / 4 * (int)Scale, (int)Position.Y + Texture.Height / 4 * (int)Scale, (int)(Texture.Width * Scale)/2, (int)(Texture.Height * Scale)/2);
+                return new Rectangle((int)Position.X + Texture.Width / 6 * (int)Scale, (int)Position.Y + Texture.Height / 6 * (int)Scale, (int)(Texture.Width * Scale/1.5), (int)(Texture.Height * Scale/1.5));
             }
         }
 
