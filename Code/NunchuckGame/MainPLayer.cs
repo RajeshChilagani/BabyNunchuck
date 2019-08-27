@@ -49,18 +49,18 @@ namespace NunchuckGame
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && BoostMeter>0)
             {
-                magnitude = 250f;
-                BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                magnitude = 400f;
+                BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds * 0.5f;
                 Boosting = true;
                 speed = 5;
             }
             else
             {
                 Boosting = false;
-                magnitude = 100f;
+                magnitude = 150f;
                 speed = 30;
                 if(BoostMeter<0.5f && Keyboard.GetState().IsKeyUp(Keys.Space))
-                    BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/3;
+                    BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/6;
             }
             
             Velocity.X = (float)Math.Cos(angle);
@@ -99,7 +99,7 @@ namespace NunchuckGame
 
         public void Initialize()
         {
-            playerAnimation.Initialize(Texture, Position, 65, 37, 8, speed, Color.White, 1f, true);
+            playerAnimation.Initialize(Texture, Position, 65, 37, 8, speed, Color.White, 3f, true);
 
         }
         public void Update(GameTime gameTime)

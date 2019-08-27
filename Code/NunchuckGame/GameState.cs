@@ -42,7 +42,7 @@ namespace NunchuckGame
             TimeToSpawn -= deltaTime;
             if (TimeToSpawn <= 0)
             {
-                TimeToSpawn = (float)random.Next(500, 2501) / 1000f;
+                TimeToSpawn = (float)random.Next(300, 1501) / 1000f;
 
                 Pickup pickup;
                 bool isColliding = false;
@@ -75,7 +75,7 @@ namespace NunchuckGame
 
                     Vector2 position = new Vector2(x, y);
                     Vector2 direction = new Vector2((playArea.Width / 2) - (x + Pickup.PickupWidth() / 2), (playArea.Height / 2) - (y + Pickup.PickupHeight() / 2));
-                    pickup = new SmallPointsPickup(position, direction, 100f);
+                    pickup = new SmallPointsPickup(position, direction, 200f);
 
                     foreach (Pickup other in InactivePickups)
                     {
