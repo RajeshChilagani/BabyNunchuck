@@ -14,7 +14,8 @@ namespace NunchuckGame
         
         GameState gameState;
         MainPlayer mainChar;
-        
+        Texture2D arrowTexture;
+
 
         public NunchuckGame()
         {
@@ -51,12 +52,16 @@ namespace NunchuckGame
             Texture2D mainTexture = this.Content.Load<Texture2D>("pika.png");
             float scale = 0.3f;
 
+            arrowTexture = this.Content.Load<Texture2D>("dot");
+
             // Load the player resources
             mainChar = new MainPlayer(new Vector2(GraphicsDevice.Viewport.Width / 2 - mainTexture.Width / 2, GraphicsDevice.Viewport.Height / 2-mainTexture.Height/2), new Vector2(50));
 
+            //arrow = new MainPlayer(new Vector2(GraphicsDevice.Viewport.Width / 2 - mainTexture.Width / 2, GraphicsDevice.Viewport.Height / 2 - mainTexture.Height / 2), new Vector2(50));
+
             Pickup.PickupTexture = Content.Load<Texture2D>("player");
             Pickup.PickupScale = 0.03f;
-            mainChar.LoadTexture(mainTexture);
+            mainChar.LoadTexture(mainTexture, arrowTexture);
 
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
@@ -110,6 +115,7 @@ namespace NunchuckGame
 
             // Draw the Player
             mainChar.Draw(spriteBatch);
+            
             if (!gameState.IsGameOver)
             {  
                gameState.Draw(spriteBatch);

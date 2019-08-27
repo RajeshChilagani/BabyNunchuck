@@ -13,19 +13,24 @@ namespace NunchuckGame
     {
         public float BoostMeter = 0.5f;
         public bool Boosting = false;
+        public double angle = 0f;
+
+        public Texture2D arrowTexture { get; set; }
+
        public MainPlayer( Vector2 position, Vector2 velocity)
         {
             Position = position;
             Velocity = velocity;
         }
-        public void LoadTexture(Texture2D texture)
+        public void LoadTexture(Texture2D playerTexture, Texture2D arrowTexture)
         {
-            Initialize(texture);
+            Texture = playerTexture;
+            this.arrowTexture = arrowTexture;
         }
         public void controller(GameTime gameTime, Viewport ScreenSize)
         {
             float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            double angle = Math.Atan2(Velocity.Y, Velocity.X);
+            angle = Math.Atan2(Velocity.Y, Velocity.X);
             float magnitude ;
             
 
@@ -86,5 +91,15 @@ namespace NunchuckGame
 
             
         }
+
+     
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+
+            
+            spriteBatch.Draw(arrowTexture, Position + new Vector2(Rectangle.Width/2,Rectangle.Height/2), null, Color.White, (float)(angle - 45f), Vector2.Zero, 0.3f, SpriteEffects.None, 0f);
+        }
+
     }
 }
