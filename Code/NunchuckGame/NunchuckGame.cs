@@ -83,7 +83,11 @@ namespace NunchuckGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if(Keyboard.GetState().IsKeyDown(Keys.R))
+            {
+                gameState.RestartGame();
 
+            }
             // Game state is updated second and may override or ignore user input
             if(!gameState.IsGameOver)
             {

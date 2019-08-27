@@ -171,5 +171,14 @@ namespace NunchuckGame
 
             
         }
+        public void RestartGame()
+        {
+            IsGameOver = false;
+            ActivePickups.Clear();
+            InactivePickups.Clear();
+            Score = 0;
+
+
+        }
     }
 }
