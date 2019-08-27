@@ -118,6 +118,7 @@ namespace NunchuckGame
         {
             get
             {
+                Console.WriteLine(Position.ToString());
                 return new Rectangle((int)Position.X, (int)Position.Y, (int)(playerAnimation.FrameWidth * Scale), (int)(playerAnimation.FrameHeight * Scale));
             }
         }

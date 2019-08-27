@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -60,6 +61,11 @@ namespace NunchuckGame
         {
             Rotation = (Rotation + (float)secsElapsed * SpinSpeed) % 360;
             Position += Vector2.Multiply(Velocity, (float)(secsElapsed));
+        }
+
+        public virtual void Update(double secsElapsed, Vector2 trackPos)
+        {
+
         }
 
         public bool IsOutOfBounds(Rectangle bounds)
@@ -130,6 +136,36 @@ namespace NunchuckGame
         {
             ScoreChange = 1;
             Texture = Pickup.PickupTexture;
+        }
+    }
+
+    class FollowPickup : Pickup
+    {
+        float Magnitude = 1f;
+        public FollowPickup(Vector2 position, Vector2 direction, float speed) : base(position, direction, speed)
+        {
+            ScoreChange = 1;
+            Texture = Pickup.PickupTexture;
+            Magnitude = speed;
+        }
+
+        public override void Update(double secsElapsed, Vector2 trackPos)
+        {
+            //Vector2 direction = trackPos - new Vector2(Position.X + Rectangle.X / 2, Position.Y + Rectangle.Y / 2);
+            //double angle = Math.Atan2(direction.Y, direction.X) + (random.Next(-40, 40) * Math.PI) / 180;
+        }
+    }
+
+    class InitialTargetPickup : Pickup
+    {
+        float Magnitude = 1f;
+        public InitialTargetPickup(Vector2 position, Vector2 direction, float speed) : base(position, direction, speed)
+        {
+            ScoreChange = 1;
+            Texture = Pickup.PickupTexture;
+            Magnitude = speed;
+            direction.Normalize();
+            Velocity = Vector2.Multiply(direction, speed);
         }
     }
 
