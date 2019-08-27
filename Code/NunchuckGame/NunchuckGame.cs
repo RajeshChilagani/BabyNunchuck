@@ -14,7 +14,7 @@ namespace NunchuckGame
         
         GameState gameState;
         MainPlayer mainChar;
-        
+        BoostMeter boostMeter;
 
         public NunchuckGame()
         {
@@ -33,6 +33,7 @@ namespace NunchuckGame
             
             
             gameState = new GameState();
+            boostMeter = new BoostMeter();
            
             //gameState.AddActivePickup(new SpeedPickup());
 
@@ -60,7 +61,11 @@ namespace NunchuckGame
 
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
-            
+
+            float boostScale = 2f;
+            Texture2D boostContainerTexture = Content.Load<Texture2D>("BoostContainer");
+            boostMeter.Initialize(boostContainerTexture, Content.Load<Texture2D>("BoostBarCropped"), boostScale, 
+                new Vector2(GraphicsDevice.Viewport.Width - 20 - (boostContainerTexture.Width * boostScale), 20), ref mainChar);
         }
 
         /// <summary>
@@ -93,6 +98,7 @@ namespace NunchuckGame
             {
                 gameState.Update(gameTime, GraphicsDevice.Viewport.TitleSafeArea, ref mainChar);
                 mainChar.controller(gameTime, GraphicsDevice.Viewport);
+                boostMeter.SetCurrentBoost(mainChar.BoostMeter);
             }
           
             // The player gets moved
@@ -122,8 +128,8 @@ namespace NunchuckGame
             {
                 spriteBatch.DrawString(gameState.font, "Game Over", new Vector2(10, 40), Color.Red);
             }
-           
-            
+
+            boostMeter.Draw(spriteBatch);
 
             // Stop drawing
             spriteBatch.End();
