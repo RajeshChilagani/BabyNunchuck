@@ -22,6 +22,7 @@ namespace NunchuckGame
         public NunchuckGame()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
         }
 
@@ -51,8 +52,7 @@ namespace NunchuckGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            Texture2D mainTexture = this.Content.Load<Texture2D>("UpAttack");
+            Texture2D mainTexture = this.Content.Load<Texture2D>( "AllAttacks");
             float scale = 0.3f;
 
             arrowTexture = this.Content.Load<Texture2D>("dot");

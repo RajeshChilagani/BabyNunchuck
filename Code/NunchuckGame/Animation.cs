@@ -46,7 +46,7 @@ namespace NunchuckGame
 
 
         }
-        public void Update(GameTime gameTime, Vector2 position, int frameTime)
+        public void Update(GameTime gameTime, Vector2 position, int frameTime,int srcY)
         {
             Position = position;
             this.frameTime = frameTime;
@@ -69,7 +69,7 @@ namespace NunchuckGame
                 elapsedTime = 0;
             }
 
-            srcRect = new Rectangle(currentFrame * FrameWidth, 0, FrameWidth, FrameHeight);
+            srcRect = new Rectangle(currentFrame * FrameWidth, srcY, FrameWidth, FrameHeight);
             desRect = new Rectangle((int)Position.X, (int)Position.Y, (int)(FrameWidth * scale), (int)(FrameHeight * scale));
 
 
