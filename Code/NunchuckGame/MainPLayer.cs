@@ -57,8 +57,8 @@ namespace NunchuckGame
             else
             {
                 Boosting = false;
-                magnitude = 200f;
                 speed = 60;
+                magnitude = 200f;
                 if(BoostMeter<0.5f && Keyboard.GetState().IsKeyUp(Keys.Space))
                     BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/6;
             }
@@ -130,7 +130,7 @@ namespace NunchuckGame
             get
             {
                 Console.WriteLine(Position.ToString());
-                return new Rectangle((int)Position.X + (int)(playerAnimation.FrameWidth * Scale) / 4, (int)Position.Y + (int)(playerAnimation.FrameHeight * Scale) / 4, (int)(playerAnimation.FrameWidth * Scale)/2, (int)(playerAnimation.FrameHeight * Scale)/2);
+                return new Rectangle((int)Position.X , (int)Position.Y , (int)(playerAnimation.FrameWidth * Scale), (int)(playerAnimation.FrameHeight * Scale));
             }
         }
     }
