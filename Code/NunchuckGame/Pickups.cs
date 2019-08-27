@@ -151,8 +151,27 @@ namespace NunchuckGame
 
         public override void Update(double secsElapsed, Vector2 trackPos)
         {
-            //Vector2 direction = trackPos - new Vector2(Position.X + Rectangle.X / 2, Position.Y + Rectangle.Y / 2);
-            //double angle = Math.Atan2(direction.Y, direction.X) + (random.Next(-40, 40) * Math.PI) / 180;
+            Vector2 direction = trackPos - new Vector2(Position.X + this.Rectangle.Width / 2, Position.Y + this.Rectangle.Height / 2);
+            direction.Normalize();
+            double targetAngle = Math.Atan2(direction.Y, direction.X);
+            double currentAngle = Math.Atan2(Velocity.Y, Velocity.X);
+
+            if (Math.Abs((targetAngle + 2f * Math.PI) - currentAngle) < Math.Abs(targetAngle - currentAngle))
+                targetAngle += 2f * Math.PI;
+            else if (Math.Abs(targetAngle - (currentAngle + 2f * Math.PI)) > Math.Abs(targetAngle - Math.PI))
+                currentAngle += 2f * Math.PI;
+
+            bool Above = targetAngle > currentAngle;
+            currentAngle += (targetAngle - currentAngle) * 0.5f * secsElapsed;
+            if (Above && currentAngle > targetAngle)
+                currentAngle = targetAngle;
+            else if (!Above && targetAngle < currentAngle)
+                currentAngle = targetAngle;
+
+            direction.X = (float)Math.Cos(currentAngle);
+            direction.Y = (float)Math.Sin(currentAngle);
+
+            Velocity = Vector2.Multiply(direction, Magnitude);
         }
     }
 

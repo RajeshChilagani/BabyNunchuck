@@ -77,7 +77,7 @@ namespace NunchuckGame
                     Vector2 position = new Vector2(x, y);
                     //Vector2 direction = new Vector2((playArea.Width / 2) - (x + Pickup.PickupWidth() / 2), (playArea.Height / 2) - (y + Pickup.PickupHeight() / 2));
                     Vector2 direction = playerCenter - position;
-                    pickup = new InitialTargetPickup(position, direction, 200f);
+                    pickup = new FollowPickup(position, direction, 200f);
 
                     foreach (Pickup other in InactivePickups)
                     {
