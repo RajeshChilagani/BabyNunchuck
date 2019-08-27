@@ -65,14 +65,14 @@ namespace NunchuckGame
             //arrow = new MainPlayer(new Vector2(GraphicsDevice.Viewport.Width / 2 - mainTexture.Width / 2, GraphicsDevice.Viewport.Height / 2 - mainTexture.Height / 2), new Vector2(50));
 
             Pickup.PickupTexture = Content.Load<Texture2D>("Enemy");
-            Pickup.PickupScale = 3f;
+            Pickup.PickupScale = 2f;
             mainChar.LoadTexture(mainTexture, arrowTexture);
             mainChar.Initialize();
 
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
 
-            float boostScale = 4f;
+            float boostScale = 3f;
             Texture2D boostContainerTexture = Content.Load<Texture2D>("BoostContainer");
             boostMeter.Initialize(boostContainerTexture, Content.Load<Texture2D>("BoostBarCropped"), boostScale, 
                 new Vector2(GraphicsDevice.Viewport.Width - 20 - (boostContainerTexture.Width * boostScale), 20), ref mainChar);
@@ -98,7 +98,7 @@ namespace NunchuckGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if(Keyboard.GetState().IsKeyDown(Keys.R))
+            if(Keyboard.GetState().IsKeyDown(Keys.R) && gameState.IsGameOver==true)
             {
                 gameState.RestartGame();
 

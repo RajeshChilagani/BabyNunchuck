@@ -49,16 +49,16 @@ namespace NunchuckGame
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && BoostMeter>0)
             {
-                magnitude = 400f;
+                magnitude = 450f;
                 BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds * 0.5f;
                 Boosting = true;
-                speed = 5;
+                speed = 10;
             }
             else
             {
                 Boosting = false;
-                magnitude = 150f;
-                speed = 30;
+                speed = 60;
+                magnitude = 200f;
                 if(BoostMeter<0.5f && Keyboard.GetState().IsKeyUp(Keys.Space))
                     BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/6;
             }
@@ -99,7 +99,7 @@ namespace NunchuckGame
 
         public void Initialize()
         {
-            playerAnimation.Initialize(Texture, Position, 65, 37, 8, speed, Color.White, 3f, true);
+            playerAnimation.Initialize(Texture, Position, 65, 37, 8, speed, Color.White, 2f, true);
 
         }
         public void Update(GameTime gameTime)
@@ -130,7 +130,7 @@ namespace NunchuckGame
             get
             {
                 Console.WriteLine(Position.ToString());
-                return new Rectangle((int)Position.X, (int)Position.Y, (int)(playerAnimation.FrameWidth * Scale), (int)(playerAnimation.FrameHeight * Scale));
+                return new Rectangle((int)Position.X , (int)Position.Y , (int)(playerAnimation.FrameWidth * Scale), (int)(playerAnimation.FrameHeight * Scale));
             }
         }
     }
