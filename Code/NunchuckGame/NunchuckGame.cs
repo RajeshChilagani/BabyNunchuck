@@ -52,7 +52,7 @@ namespace NunchuckGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Texture2D mainTexture = this.Content.Load<Texture2D>("pika.png");
+            Texture2D mainTexture = this.Content.Load<Texture2D>("UpAttack");
             float scale = 0.3f;
 
             arrowTexture = this.Content.Load<Texture2D>("dot");
@@ -62,9 +62,10 @@ namespace NunchuckGame
 
             //arrow = new MainPlayer(new Vector2(GraphicsDevice.Viewport.Width / 2 - mainTexture.Width / 2, GraphicsDevice.Viewport.Height / 2 - mainTexture.Height / 2), new Vector2(50));
 
-            Pickup.PickupTexture = Content.Load<Texture2D>("player");
-            Pickup.PickupScale = 0.03f;
+            Pickup.PickupTexture = Content.Load<Texture2D>("Enemy");
+            Pickup.PickupScale = 1f;
             mainChar.LoadTexture(mainTexture, arrowTexture);
+            mainChar.Initialize();
 
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
@@ -106,6 +107,7 @@ namespace NunchuckGame
                 gameState.Update(gameTime, GraphicsDevice.Viewport.TitleSafeArea, ref mainChar);
                 mainChar.controller(gameTime, GraphicsDevice.Viewport);
                 boostMeter.SetCurrentBoost(mainChar.BoostMeter);
+                mainChar.Update(gameTime);
             }
           
             // The player gets moved

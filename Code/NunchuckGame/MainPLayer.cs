@@ -15,6 +15,9 @@ namespace NunchuckGame
         public bool Boosting = false;
         public double angle = 0f;
 
+        int speed = 30;
+        Animation playerAnimation = new Animation();
+
         public Texture2D arrowTexture { get; set; }
 
        public MainPlayer( Vector2 position, Vector2 velocity)
@@ -56,11 +59,13 @@ namespace NunchuckGame
                 magnitude = 250f;
                 BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                 Boosting = true;
+                speed = 5;
             }
             else
             {
                 Boosting = false;
                 magnitude = 100f;
+                speed = 30;
                 if(BoostMeter<0.5f && Keyboard.GetState().IsKeyUp(Keys.Space))
                     BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/3;
             }
@@ -95,11 +100,26 @@ namespace NunchuckGame
      
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
-
-            
+            playerAnimation.Draw(spriteBatch);
             spriteBatch.Draw(arrowTexture, Position + new Vector2(Rectangle.Width/2,Rectangle.Height/2), null, Color.White, (float)(angle - 45f), Vector2.Zero, 0.3f, SpriteEffects.None, 0f);
         }
 
+        public void Initialize()
+        {
+            playerAnimation.Initialize(Texture, Position, 65, 37, 8, speed, Color.White, 1f, true);
+
+        }
+        public void Update(GameTime gameTime)
+        {
+            playerAnimation.Update(gameTime, Position, speed);
+        }
+
+        public override Rectangle Rectangle
+        {
+            get
+            {
+                return new Rectangle((int)Position.X, (int)Position.Y, (int)(playerAnimation.FrameWidth * Scale), (int)(playerAnimation.FrameHeight * Scale));
+            }
+        }
     }
 }

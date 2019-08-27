@@ -18,7 +18,7 @@ namespace NunchuckGame
         public Color color = Color.White;
         public bool isTouching = false;
 
-        public Rectangle Rectangle
+        public virtual Rectangle Rectangle
         {
             get
             {
