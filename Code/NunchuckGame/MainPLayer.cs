@@ -37,22 +37,15 @@ namespace NunchuckGame
             float magnitude ;
             
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+           
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                angle += (150f * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                angle += (150 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
 
-                angle -= (150f * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                angle -= (150 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && BoostMeter>0)
             {
@@ -111,7 +104,25 @@ namespace NunchuckGame
         }
         public void Update(GameTime gameTime)
         {
-            playerAnimation.Update(gameTime, Position, speed);
+            int srcY=0;
+            Console.WriteLine(angle);
+            if(angle>=Math.PI/4 && angle<=(Math.PI*3)/4)
+            {
+                srcY = 0;
+            }
+            else if(angle >= (Math.PI * 3) / 4 || angle <= -(Math.PI * 3) / 4)
+            {
+                srcY = 74;
+            }
+            else if (angle >= -(Math.PI * 3) / 4 && angle <= -(Math.PI) / 4)
+            {
+                srcY = 37;
+            }
+            else if (angle >= -(Math.PI) / 4 || angle <= Math.PI / 4)
+            {
+                srcY = 111;
+            }
+            playerAnimation.Update(gameTime, Position, speed,srcY);
         }
 
         public override Rectangle Rectangle
