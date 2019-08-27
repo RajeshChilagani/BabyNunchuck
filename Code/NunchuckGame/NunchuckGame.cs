@@ -72,7 +72,7 @@ namespace NunchuckGame
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
 
-            float boostScale = 4f;
+            float boostScale = 3f;
             Texture2D boostContainerTexture = Content.Load<Texture2D>("BoostContainer");
             boostMeter.Initialize(boostContainerTexture, Content.Load<Texture2D>("BoostBarCropped"), boostScale, 
                 new Vector2(GraphicsDevice.Viewport.Width - 20 - (boostContainerTexture.Width * boostScale), 20), ref mainChar);

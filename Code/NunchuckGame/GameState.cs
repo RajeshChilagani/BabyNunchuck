@@ -43,7 +43,7 @@ namespace NunchuckGame
             TimeToSpawn -= deltaTime;
             if (TimeToSpawn <= 0)
             {
-                TimeToSpawn = (float)random.Next(300, 1501) / 1000f;
+                TimeToSpawn = (float)random.Next(500, 2501) / 1000f;
 
                 Pickup pickup;
                 bool isColliding = false;
