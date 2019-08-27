@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BoostMeter.cs" />
     <Compile Include="MainPlayer.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="GameState.cs" />
