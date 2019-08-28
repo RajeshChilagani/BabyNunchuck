@@ -15,6 +15,7 @@ namespace NunchuckGame
         GameState gameState;
         MainPlayer mainChar;
         BoostMeter boostMeter;
+        Environment env;
 
         Texture2D arrowTexture;
 
@@ -22,6 +23,8 @@ namespace NunchuckGame
         public NunchuckGame()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
         }
@@ -38,6 +41,7 @@ namespace NunchuckGame
             
             gameState = new GameState();
             boostMeter = new BoostMeter();
+            env = new Environment();
            
             //gameState.AddActivePickup(new SpeedPickup());
 
@@ -53,7 +57,7 @@ namespace NunchuckGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Texture2D mainTexture = this.Content.Load<Texture2D>( "AllAttacks");
-            float scale = 0.3f;
+           // float scale = 0.3f;
 
             arrowTexture = this.Content.Load<Texture2D>("dot");
 
@@ -63,17 +67,23 @@ namespace NunchuckGame
             //arrow = new MainPlayer(new Vector2(GraphicsDevice.Viewport.Width / 2 - mainTexture.Width / 2, GraphicsDevice.Viewport.Height / 2 - mainTexture.Height / 2), new Vector2(50));
 
             Pickup.PickupTexture = Content.Load<Texture2D>("Enemy");
-            Pickup.PickupScale = 1f;
+            Pickup.PickupScale = 2f;
             mainChar.LoadTexture(mainTexture, arrowTexture);
             mainChar.Initialize();
 
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
 
-            float boostScale = 2f;
+            float boostScale = 3f;
             Texture2D boostContainerTexture = Content.Load<Texture2D>("BoostContainer");
             boostMeter.Initialize(boostContainerTexture, Content.Load<Texture2D>("BoostBarCropped"), boostScale, 
                 new Vector2(GraphicsDevice.Viewport.Width - 20 - (boostContainerTexture.Width * boostScale), 20), ref mainChar);
+
+            //Environment
+            
+
+            env.Intiliaze(Content.Load<Texture2D>("Background"),GraphicsDevice.Viewport);
+
         }
 
         /// <summary>
@@ -96,7 +106,7 @@ namespace NunchuckGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if(Keyboard.GetState().IsKeyDown(Keys.R))
+            if(Keyboard.GetState().IsKeyDown(Keys.R) && gameState.IsGameOver==true)
             {
                 gameState.RestartGame();
 
@@ -122,12 +132,14 @@ namespace NunchuckGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            GraphicsDevice.Clear(Color.White);
 
             // Start drawing
             spriteBatch.Begin();
 
             // Draw the Player
+            env.draw(spriteBatch);
             mainChar.Draw(spriteBatch);
             
             if (!gameState.IsGameOver)

@@ -11,7 +11,7 @@ namespace NunchuckGame
 {
     class MainPlayer : Sprite
     {
-        public float BoostMeter = 0.5f;
+        public float BoostMeter = 0.6f;
         public bool Boosting = false;
         public double angle = 0f;
 
@@ -40,27 +40,27 @@ namespace NunchuckGame
            
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                angle += (150 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                angle += (250 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
 
-                angle -= (150 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                angle -= (250 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && BoostMeter>0)
+            if ((Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Up)) && BoostMeter>0)
             {
-                magnitude = 250f;
-                BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                magnitude = 450f;
+                BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds * 0.5f;
                 Boosting = true;
-                speed = 5;
+                speed = 10;
             }
             else
             {
                 Boosting = false;
-                magnitude = 100f;
-                speed = 30;
-                if(BoostMeter<0.5f && Keyboard.GetState().IsKeyUp(Keys.Space))
-                    BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/3;
+                speed = 60;
+                magnitude = 200f;
+                if(BoostMeter<0.6f && (Keyboard.GetState().IsKeyUp(Keys.Space) || Keyboard.GetState().IsKeyUp(Keys.Up)))
+                    BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/4;
             }
             
             Velocity.X = (float)Math.Cos(angle);
@@ -85,7 +85,7 @@ namespace NunchuckGame
             {
                 Position.Y = ScreenSize.Height - 25 - Rectangle.Height;
             }
-            Console.WriteLine();
+            
 
             
         }
@@ -93,19 +93,21 @@ namespace NunchuckGame
      
         public override void Draw(SpriteBatch spriteBatch)
         {
+            
             playerAnimation.Draw(spriteBatch);
-            spriteBatch.Draw(arrowTexture, Position + new Vector2(Rectangle.Width/2,Rectangle.Height/2), null, Color.White, (float)(angle - 45f), Vector2.Zero, 0.3f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)(angle-45f), new Vector2(0, 0), 0.3f, SpriteEffects.None, 0f);
+
         }
 
         public void Initialize()
         {
-            playerAnimation.Initialize(Texture, Position, 65, 37, 8, speed, Color.White, 1f, true);
+            playerAnimation.Initialize(Texture, Position, 65, 37, 8, speed, Color.White, 2f, true);
 
         }
         public void Update(GameTime gameTime)
         {
             int srcY=0;
-            Console.WriteLine(angle);
+           // Console.WriteLine(angle);
             if(angle>=Math.PI/4 && angle<=(Math.PI*3)/4)
             {
                 srcY = 0;
@@ -129,7 +131,8 @@ namespace NunchuckGame
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, (int)(playerAnimation.FrameWidth * Scale), (int)(playerAnimation.FrameHeight * Scale));
+               // Console.WriteLine(Position.ToString());
+                return new Rectangle((int)Position.X + (int)(playerAnimation.FrameWidth * Scale) /6, (int)Position.Y + (int)(playerAnimation.FrameHeight * Scale) / 6, (int)(playerAnimation.FrameWidth * Scale/1.5), (int)(playerAnimation.FrameHeight * Scale/1.5));
             }
         }
     }

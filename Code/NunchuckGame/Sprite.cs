@@ -14,7 +14,7 @@ namespace NunchuckGame
 
         public Vector2 Position;
         public Vector2 Velocity;
-        protected float Scale=1;
+        protected float Scale=2f;
         public Color color = Color.White;
         public bool isTouching = false;
 
@@ -22,7 +22,7 @@ namespace NunchuckGame
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, (int)(Texture.Width * Scale), (int)(Texture.Height * Scale));
+                return new Rectangle((int)Position.X + Texture.Width / 6 * (int)Scale, (int)Position.Y + Texture.Height / 6 * (int)Scale, (int)(Texture.Width * Scale/1.5), (int)(Texture.Height * Scale/1.5));
             }
         }
 
