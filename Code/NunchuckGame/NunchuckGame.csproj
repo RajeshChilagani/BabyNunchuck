@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="BoostMeter.cs" />
+    <Compile Include="Environment.cs" />
     <Compile Include="MainPlayer.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="GameState.cs" />

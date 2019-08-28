@@ -85,7 +85,7 @@ namespace NunchuckGame
             {
                 Position.Y = ScreenSize.Height - 25 - Rectangle.Height;
             }
-            Console.WriteLine();
+            
 
             
         }
@@ -93,9 +93,10 @@ namespace NunchuckGame
      
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)(angle), new Vector2(0, arrowTexture.Height / 2), 0.08f, SpriteEffects.None, 0f);
+            
             playerAnimation.Draw(spriteBatch);
-           
+            spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)(angle-45f), new Vector2(0, 0), 0.3f, SpriteEffects.None, 0f);
+
         }
 
         public void Initialize()
@@ -106,7 +107,7 @@ namespace NunchuckGame
         public void Update(GameTime gameTime)
         {
             int srcY=0;
-            Console.WriteLine(angle);
+           // Console.WriteLine(angle);
             if(angle>=Math.PI/4 && angle<=(Math.PI*3)/4)
             {
                 srcY = 0;
@@ -130,7 +131,7 @@ namespace NunchuckGame
         {
             get
             {
-                Console.WriteLine(Position.ToString());
+               // Console.WriteLine(Position.ToString());
                 return new Rectangle((int)Position.X + (int)(playerAnimation.FrameWidth * Scale) /6, (int)Position.Y + (int)(playerAnimation.FrameHeight * Scale) / 6, (int)(playerAnimation.FrameWidth * Scale/1.5), (int)(playerAnimation.FrameHeight * Scale/1.5));
             }
         }
