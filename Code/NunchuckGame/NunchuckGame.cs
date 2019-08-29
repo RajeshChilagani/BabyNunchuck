@@ -178,7 +178,7 @@ namespace NunchuckGame
             
             if (!gameState.IsGameOver)
             {  
-               gameState.Draw(spriteBatch);
+               gameState.Draw(spriteBatch,ref mainChar,gameTime);
             }
             else
             {

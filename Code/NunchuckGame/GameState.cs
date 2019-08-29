@@ -15,6 +15,10 @@ namespace NunchuckGame
         private Random random;
         double TimeToSpawn;
         float Difficulty = 0.1f; // Higher means more difficult
+
+        float MaxComboTime = 0.5f;
+        float ComboTimer = 0f;
+        int ComboCount = 0;
         float pikcups_Speed=300;
 
         public GameState()
@@ -29,7 +33,9 @@ namespace NunchuckGame
 
         public void AddActivePickup(Pickup pickup)
         {
-            Score += pickup.GetScoreChange();
+            ComboTimer = MaxComboTime;
+            ComboCount++;
+            Score += 1 << (ComboCount - 1);
             if (pickup.GetDuration() > 0)
                 ActivePickups.Add(pickup);
             else if (pickup.GetEndsGame())
@@ -39,6 +45,12 @@ namespace NunchuckGame
         public void Update(GameTime gameTime, Rectangle playArea, ref MainPlayer player)
         {
             double deltaTime = gameTime.ElapsedGameTime.TotalSeconds;
+
+            ComboTimer -= (float)deltaTime;
+            if (ComboTimer <= 0)
+            {
+                ComboCount = 0;
+            }
 
             Vector2 playerCenter = new Vector2(player.Position.X + player.Rectangle.Width / 2, player.Position.Y + player.Rectangle.Height / 2);
 
@@ -165,7 +177,7 @@ namespace NunchuckGame
             font = spriteFont;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, ref MainPlayer player, GameTime gameTime)
         {
             foreach (Pickup pickup in InactivePickups)
             {
@@ -173,6 +185,23 @@ namespace NunchuckGame
             }
             string score = "Score: " + Score.ToString();
             spriteBatch.DrawString(font, score, new Vector2(10, 10), Color.Black, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
+
+            if (ComboCount > 1) {
+                
+                float shakeCount = ComboTimer; 
+                string comboUI = "x" + ComboCount.ToString() + " COMBO!";
+                Vector2 comboPos = new Vector2(20, -60f);
+                float shake = (float)((int)gameTime.TotalGameTime.TotalMilliseconds % 20);
+                
+                if (shake < 10)
+                {
+                    shake = 10 - shake % 10;
+                }
+
+                comboPos.Y += shake;
+
+                spriteBatch.DrawString(font, comboUI, player.Position + comboPos, Color.Black, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
+            }
 
 
             
@@ -183,6 +212,8 @@ namespace NunchuckGame
             ActivePickups.Clear();
             InactivePickups.Clear();
             Score = 0;
+            ComboTimer = 0.5f;
+            ComboCount = 0;
         }
     }
 }
