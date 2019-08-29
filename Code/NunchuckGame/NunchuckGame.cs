@@ -16,12 +16,12 @@ namespace NunchuckGame
         MainPlayer mainChar;
         BoostMeter boostMeter;
         Environment env;
-        Environment topborder;
+        Environment topBorder;
         Environment topFence;
-        Environment botborder;
+        Environment botBorder;
         Environment botFence;
-        Environment LeftSide;
-        
+
+
 
         Texture2D arrowTexture;
         Texture2D baseTexture;
@@ -50,11 +50,11 @@ namespace NunchuckGame
             gameState = new GameState();
             boostMeter = new BoostMeter();
             env = new Environment();
-            topborder = new Environment();
+            topBorder = new Environment();
             topFence = new Environment();
-            botborder = new Environment();
+            botBorder = new Environment();
             botFence = new Environment();
-            LeftSide = new Environment();
+
 
             //gameState.AddActivePickup(new SpeedPickup());
 
@@ -69,7 +69,7 @@ namespace NunchuckGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Texture2D mainTexture = this.Content.Load<Texture2D>( "AllAttacks");
+            Texture2D mainTexture = this.Content.Load<Texture2D>("All_Attacks");
            // float scale = 0.3f;
 
             arrowTexture = this.Content.Load<Texture2D>("arrow-pointer");
@@ -97,19 +97,25 @@ namespace NunchuckGame
                 new Vector2(GraphicsDevice.Viewport.Width - 20 - (boostContainerTexture.Width * boostScale), 20), ref mainChar);
 
             //Environment
-            
 
+            Texture2D TopWall = Content.Load<Texture2D>("TopWall");
+            Texture2D Fence = Content.Load<Texture2D>("Fence");
+            Texture2D BotWall = Content.Load<Texture2D>("BotWall");
+            Texture2D SideWall = Content.Load<Texture2D>("SideWall");
             env.Intiliaze(Content.Load<Texture2D>("Background"),GraphicsDevice.Viewport);
             env.Blocks();
-            topborder.Intiliaze(Content.Load<Texture2D>("TopWall"), GraphicsDevice.Viewport);
-            topborder.walls(0);
-            topFence.Intiliaze(Content.Load<Texture2D>("Boundary"), GraphicsDevice.Viewport);
-            topFence.walls(80);
-            botborder.Intiliaze(Content.Load<Texture2D>("TopWall"), GraphicsDevice.Viewport);
-            botborder.walls(GraphicsDevice.Viewport.Height-128);
-            botFence.Intiliaze(Content.Load<Texture2D>("Boundary"), GraphicsDevice.Viewport);
-            botFence.walls(GraphicsDevice.Viewport.Height-192);
-            LeftSide.Intiliaze(Content.Load<Texture2D>("Boundary"),GraphicsDevice.Viewport);
+            //top
+            topBorder.Intiliaze(TopWall, GraphicsDevice.Viewport);
+            topBorder.walls(0,0);
+            topFence.Intiliaze(Fence, GraphicsDevice.Viewport);
+            topFence.fences(0, TopWall.Height*2- Fence.Height*2);
+            //bottom
+            botBorder.Intiliaze(BotWall, GraphicsDevice.Viewport);
+            botBorder.walls(SideWall.Width*2,GraphicsDevice.Viewport.Height- BotWall.Height*2);
+            botFence.Intiliaze(Fence, GraphicsDevice.Viewport);
+            botFence.fences(SideWall.Width * 2, GraphicsDevice.Viewport.Height - BotWall.Height * 2-Fence.Height*2);
+            //leftSide
+
 
         }
 
@@ -170,10 +176,11 @@ namespace NunchuckGame
 
             // Draw the Player
             env.draw(spriteBatch);
-            topborder.draw(spriteBatch);
+            topBorder.draw(spriteBatch);
             topFence.draw(spriteBatch);
-            botborder.draw(spriteBatch);
+            botBorder.draw(spriteBatch);
             botFence.draw(spriteBatch);
+
             mainChar.Draw(spriteBatch);
             
             if (!gameState.IsGameOver)
