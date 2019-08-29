@@ -13,7 +13,7 @@ namespace NunchuckGame
     class Animation
     {
         Texture2D spriteSheet;
-        float scale;
+        public float scale;
         int elapsedTime;
         int frameTime;
         int frameCount;

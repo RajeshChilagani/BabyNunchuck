@@ -32,7 +32,7 @@ namespace NunchuckGame
             this.arrowTexture = arrowTexture;
             this.baseTexture = baseTexture;
         }
-        public void controller(GameTime gameTime, Viewport ScreenSize)
+        public void controller(GameTime gameTime, Viewport ScreenSize, ref GameState gameState)
         {
             float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             angle = Math.Atan2(Velocity.Y, Velocity.X);
@@ -88,8 +88,25 @@ namespace NunchuckGame
                 Position.Y = ScreenSize.Height - 180 - Rectangle.Height;
             }
             
-
-            
+            foreach (Sprite obstacle in gameState.Obstacles)
+            {
+                if (this.IsTouchingLeft(obstacle))
+                {
+                    Position.X = obstacle.Rectangle.X - Rectangle.Width - (Rectangle.X - Position.X);
+                }
+                else if (this.IsTouchingRight(obstacle))
+                {
+                    Position.X = obstacle.Rectangle.X + obstacle.Rectangle.Width - (Rectangle.X - Position.X);
+                }
+                else if (this.IsTouchingTop(obstacle))
+                {
+                    Position.Y = obstacle.Rectangle.Y - Rectangle.Height - (Rectangle.Y - Position.Y);
+                }
+                else if (this.IsTouchingBottom(obstacle))
+                {
+                    Position.Y = obstacle.Rectangle.Y + obstacle.Rectangle.Height - (Rectangle.Y - Position.Y);
+                }
+            }
         }
 
      
@@ -106,7 +123,7 @@ namespace NunchuckGame
         public void Initialize()
         {
             playerAnimation.Initialize(Texture, Position, 65, 37, 8, speed, Color.White, 2f, true);
-
+            Scale = playerAnimation.scale;
         }
         public void Update(GameTime gameTime)
         {

@@ -17,14 +17,34 @@ namespace NunchuckGame
         float Difficulty = 0.1f; // Higher means more difficult
         float pikcups_Speed=300;
 
+        public List<Sprite> Obstacles;
+
         public GameState()
         {
+            Obstacles = new List<Sprite>();
+            Sprite obstacle1 = new Sprite();
+            Sprite obstacle2 = new Sprite();
+            obstacle1.Position = new Vector2(100, 100);
+            obstacle2.Position = new Vector2(800, 600);
+            obstacle1.Scale = 0.1f;
+            obstacle2.Scale = 0.1f;
+            Obstacles.Add(obstacle1);
+            Obstacles.Add(obstacle2);
+
             random = new Random();
             TimeToSpawn = 0f;
             Score = 0;
             ActivePickups = new List<Pickup>();
             InactivePickups = new List<Pickup>();
             IsGameOver = false;
+        }
+
+        public void SetObstaclesTexture(Texture2D texture)
+        {
+            foreach (Sprite obstacle in Obstacles)
+            {
+                obstacle.Initialize(texture);
+            }
         }
 
         public void AddActivePickup(Pickup pickup)
@@ -51,6 +71,7 @@ namespace NunchuckGame
                 Pickup pickup;
                 bool isColliding = false;
 
+                int spawnAttempts = 0;
                 do
                 {
                     // Find whether the object will be spawned from above, the right, below, or the left
@@ -81,6 +102,10 @@ namespace NunchuckGame
                     //Vector2 direction = new Vector2((playArea.Width / 2) - (x + Pickup.PickupWidth() / 2), (playArea.Height / 2) - (y + Pickup.PickupHeight() / 2));
                     Vector2 direction = playerCenter - position;
                     pickup = new FollowPickup(position, direction, pikcups_Speed);
+
+                    spawnAttempts++;
+                    if (spawnAttempts >= 10)
+                        break;
 
                     foreach (Pickup other in InactivePickups)
                     {
@@ -167,15 +192,18 @@ namespace NunchuckGame
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            foreach (Sprite obstacle in Obstacles)
+            {
+                obstacle.Draw(spriteBatch);
+            }
+
             foreach (Pickup pickup in InactivePickups)
             {
                 pickup.Draw(spriteBatch);
             }
+
             string score = "Score: " + Score.ToString();
             spriteBatch.DrawString(font, score, new Vector2(10, 10), Color.Black, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
-
-
-            
         }
         public void RestartGame()
         {

@@ -88,6 +88,8 @@ namespace NunchuckGame
             mainChar.LoadTexture(mainTexture, arrowTexture, baseTexture);
             mainChar.Initialize();
 
+            gameState.SetObstaclesTexture(Content.Load<Texture2D>("player"));
+
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
 
@@ -144,7 +146,7 @@ namespace NunchuckGame
             if(!gameState.IsGameOver)
             {
                 gameState.Update(gameTime, GraphicsDevice.Viewport.TitleSafeArea, ref mainChar);
-                mainChar.controller(gameTime, GraphicsDevice.Viewport);
+                mainChar.controller(gameTime, GraphicsDevice.Viewport, ref gameState);
                 boostMeter.SetCurrentBoost(mainChar.BoostMeter);
                 mainChar.Update(gameTime);
                
