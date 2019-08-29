@@ -19,16 +19,18 @@ namespace NunchuckGame
         Animation playerAnimation = new Animation();
 
         public Texture2D arrowTexture { get; set; }
+        public Texture2D baseTexture { get; set; }
 
-       public MainPlayer( Vector2 position, Vector2 velocity)
+        public MainPlayer( Vector2 position, Vector2 velocity)
         {
             Position = position;
             Velocity = velocity;
         }
-        public void LoadTexture(Texture2D playerTexture, Texture2D arrowTexture)
+        public void LoadTexture(Texture2D playerTexture, Texture2D arrowTexture, Texture2D baseTexture)
         {
             Texture = playerTexture;
             this.arrowTexture = arrowTexture;
+            this.baseTexture = baseTexture;
         }
         public void controller(GameTime gameTime, Viewport ScreenSize)
         {
@@ -94,8 +96,10 @@ namespace NunchuckGame
         public override void Draw(SpriteBatch spriteBatch)
         {
             
+            
+            spriteBatch.Draw(baseTexture, Position, null, Color.White, 0f, new Vector2(-15,-15), 2f, SpriteEffects.None, 0f);
             playerAnimation.Draw(spriteBatch);
-            spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)(angle-45f), new Vector2(0, 0), 0.3f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)angle + 90, new Vector2(10, 30), 3f, SpriteEffects.None, 0f);
 
         }
 

@@ -7,7 +7,7 @@ namespace NunchuckGame
 {
     class GameState
     {
-        private int Score;
+        public int Score;
         public SpriteFont font;
         private List<Pickup> ActivePickups;
         private List<Pickup> InactivePickups;
@@ -170,7 +170,7 @@ namespace NunchuckGame
                 pickup.Draw(spriteBatch);
             }
             string score = "Score: " + Score.ToString();
-            spriteBatch.DrawString(font, score, new Vector2(10, 10), Color.Black);
+            spriteBatch.DrawString(font, score, new Vector2(10, 10), Color.Black, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0f);
 
 
             
@@ -181,7 +181,7 @@ namespace NunchuckGame
             ActivePickups.Clear();
             InactivePickups.Clear();
             Score = 0;
-
+            
 
         }
     }

@@ -18,6 +18,8 @@ namespace NunchuckGame
         Environment env;
 
         Texture2D arrowTexture;
+        Texture2D baseTexture;
+        Texture2D gameOverTexture;
 
 
         public NunchuckGame()
@@ -59,7 +61,11 @@ namespace NunchuckGame
             Texture2D mainTexture = this.Content.Load<Texture2D>( "AllAttacks");
            // float scale = 0.3f;
 
-            arrowTexture = this.Content.Load<Texture2D>("dot");
+            arrowTexture = this.Content.Load<Texture2D>("arrow-pointer");
+
+            baseTexture = this.Content.Load<Texture2D>("base");
+
+            gameOverTexture = this.Content.Load<Texture2D>("gameover");
 
             // Load the player resources
             mainChar = new MainPlayer(new Vector2(GraphicsDevice.Viewport.Width / 2 - mainTexture.Width / 2, GraphicsDevice.Viewport.Height / 2-mainTexture.Height/2), new Vector2(50));
@@ -68,7 +74,7 @@ namespace NunchuckGame
 
             Pickup.PickupTexture = Content.Load<Texture2D>("Enemy");
             Pickup.PickupScale = 2f;
-            mainChar.LoadTexture(mainTexture, arrowTexture);
+            mainChar.LoadTexture(mainTexture, arrowTexture, baseTexture);
             mainChar.Initialize();
 
             // Set the game font
@@ -108,7 +114,9 @@ namespace NunchuckGame
 
             if(Keyboard.GetState().IsKeyDown(Keys.R) && gameState.IsGameOver==true)
             {
+                mainChar.BoostMeter = 0.6f;
                 gameState.RestartGame();
+                
 
             }
             // Game state is updated second and may override or ignore user input
@@ -148,7 +156,14 @@ namespace NunchuckGame
             }
             else
             {
-                spriteBatch.DrawString(gameState.font, "Game Over", new Vector2(10, 40), Color.Red);
+                float screenWidth = GraphicsDevice.Viewport.Width;
+                float screenHeight = GraphicsDevice.Viewport.Height;
+                //spriteBatch.DrawString(gameState.font, "Game Over", new Vector2(screenWidth, screenWidth), Color.Red, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(gameOverTexture, new Vector2(screenWidth/2, screenHeight/2), null, Color.White, 0f, new Vector2(gameOverTexture.Width/2, gameOverTexture.Height / 2), 4f, SpriteEffects.None, 0f);
+
+
+                string score = "Score: " + gameState.Score.ToString();
+                spriteBatch.DrawString(gameState.font, score, new Vector2(screenWidth/2 - 120, screenHeight/2 + 80), Color.Black, 0f, new Vector2(0,0), 4f, SpriteEffects.None, 0f);
             }
 
             boostMeter.Draw(spriteBatch);
