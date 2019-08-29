@@ -182,7 +182,7 @@ namespace NunchuckGame
             }
             else
             {
-                spriteBatch.DrawString(gameState.font, "Game Over", new Vector2(100, 400), Color.Red);
+                //spriteBatch.DrawString(gameState.font, "Game Over", new Vector2(100, 400), Color.Red);
                 float screenWidth = GraphicsDevice.Viewport.Width;
                 float screenHeight = GraphicsDevice.Viewport.Height;
                 //spriteBatch.DrawString(gameState.font, "Game Over", new Vector2(screenWidth, screenWidth), Color.Red, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0f);
