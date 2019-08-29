@@ -16,6 +16,12 @@ namespace NunchuckGame
         MainPlayer mainChar;
         BoostMeter boostMeter;
         Environment env;
+        Environment topborder;
+        Environment topFence;
+        Environment botborder;
+        Environment botFence;
+        Environment LeftSide;
+        
 
         Texture2D arrowTexture;
         Texture2D baseTexture;
@@ -44,7 +50,12 @@ namespace NunchuckGame
             gameState = new GameState();
             boostMeter = new BoostMeter();
             env = new Environment();
-           
+            topborder = new Environment();
+            topFence = new Environment();
+            botborder = new Environment();
+            botFence = new Environment();
+            LeftSide = new Environment();
+
             //gameState.AddActivePickup(new SpeedPickup());
 
             base.Initialize();
@@ -89,6 +100,16 @@ namespace NunchuckGame
             
 
             env.Intiliaze(Content.Load<Texture2D>("Background"),GraphicsDevice.Viewport);
+            env.Blocks();
+            topborder.Intiliaze(Content.Load<Texture2D>("TopWall"), GraphicsDevice.Viewport);
+            topborder.walls(0);
+            topFence.Intiliaze(Content.Load<Texture2D>("Boundary"), GraphicsDevice.Viewport);
+            topFence.walls(80);
+            botborder.Intiliaze(Content.Load<Texture2D>("TopWall"), GraphicsDevice.Viewport);
+            botborder.walls(GraphicsDevice.Viewport.Height-128);
+            botFence.Intiliaze(Content.Load<Texture2D>("Boundary"), GraphicsDevice.Viewport);
+            botFence.walls(GraphicsDevice.Viewport.Height-192);
+            LeftSide.Intiliaze(Content.Load<Texture2D>("Boundary"),GraphicsDevice.Viewport);
 
         }
 
@@ -126,6 +147,7 @@ namespace NunchuckGame
                 mainChar.controller(gameTime, GraphicsDevice.Viewport);
                 boostMeter.SetCurrentBoost(mainChar.BoostMeter);
                 mainChar.Update(gameTime);
+               
             }
           
             // The player gets moved
@@ -148,6 +170,10 @@ namespace NunchuckGame
 
             // Draw the Player
             env.draw(spriteBatch);
+            topborder.draw(spriteBatch);
+            topFence.draw(spriteBatch);
+            botborder.draw(spriteBatch);
+            botFence.draw(spriteBatch);
             mainChar.Draw(spriteBatch);
             
             if (!gameState.IsGameOver)
@@ -156,6 +182,7 @@ namespace NunchuckGame
             }
             else
             {
+                spriteBatch.DrawString(gameState.font, "Game Over", new Vector2(100, 400), Color.Red);
                 float screenWidth = GraphicsDevice.Viewport.Width;
                 float screenHeight = GraphicsDevice.Viewport.Height;
                 //spriteBatch.DrawString(gameState.font, "Game Over", new Vector2(screenWidth, screenWidth), Color.Red, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0f);
