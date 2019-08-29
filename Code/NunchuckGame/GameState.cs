@@ -14,6 +14,7 @@ namespace NunchuckGame
         public bool IsGameOver;
         private Random random;
         double TimeToSpawn;
+        float Difficulty = 0.1f; // Higher means more difficult
         float pikcups_Speed=300;
 
         public GameState()
@@ -44,7 +45,7 @@ namespace NunchuckGame
             TimeToSpawn -= deltaTime;
             if (TimeToSpawn <= 0)
             {
-                float DifficultyModifier = 1f / (((float)Score * 0.1f) + 1f);
+                float DifficultyModifier = 1f / (((float)Score * Difficulty) + 1f);
                 TimeToSpawn = (float)random.Next(875, 4376) * DifficultyModifier / 1000;
 
                 Pickup pickup;
@@ -171,7 +172,7 @@ namespace NunchuckGame
                 pickup.Draw(spriteBatch);
             }
             string score = "Score: " + Score.ToString();
-            spriteBatch.DrawString(font, score, new Vector2(10, 10), Color.Black, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0f);
+            spriteBatch.DrawString(font, score, new Vector2(10, 10), Color.Black, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
 
 
             
@@ -182,8 +183,6 @@ namespace NunchuckGame
             ActivePickups.Clear();
             InactivePickups.Clear();
             Score = 0;
-            
-
         }
     }
 }

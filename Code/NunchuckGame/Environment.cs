@@ -33,7 +33,7 @@ namespace NunchuckGame
         public void  Blocks()
         {
             nooFRec = (int)(screenSize.Width / (2 * Background.Width) * screenSize.Height / (2 * Background.Height));
-            nooFRec += 20;
+            nooFRec += 200;
             srcRec = new Rectangle(0, 0, Background.Width, Background.Height);
             desRec = new Rectangle[nooFRec];
             int i = 0;

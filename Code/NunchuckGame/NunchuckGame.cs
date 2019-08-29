@@ -190,7 +190,8 @@ namespace NunchuckGame
 
 
                 string score = "Score: " + gameState.Score.ToString();
-                spriteBatch.DrawString(gameState.font, score, new Vector2(screenWidth/2 - 120, screenHeight/2 + 80), Color.Black, 0f, new Vector2(0,0), 4f, SpriteEffects.None, 0f);
+                spriteBatch.DrawString(gameState.font, score, new Vector2(screenWidth/2 - 120, screenHeight/2 + 80), Color.Black, 0f, new Vector2(0,0), 2f, SpriteEffects.None, 0f);
+                spriteBatch.DrawString(gameState.font, "Press \"R\" to Restart", new Vector2(screenWidth / 2 - 280, screenHeight / 2 + 160), Color.Black, 0f, new Vector2(0, 0), 2f, SpriteEffects.None, 0f);
             }
 
             boostMeter.Draw(spriteBatch);

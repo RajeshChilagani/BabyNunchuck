@@ -99,7 +99,7 @@ namespace NunchuckGame
             
             spriteBatch.Draw(baseTexture, Position, null, Color.White, 0f, new Vector2(-25,-25), 1.5f, SpriteEffects.None, 0f);
             playerAnimation.Draw(spriteBatch);
-            spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)angle + 90, new Vector2(10,40), 3f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)angle + (float)(Math.PI / 2), new Vector2(10,40), 3f, SpriteEffects.None, 0f);
 
         }
 
