@@ -42,7 +42,7 @@ namespace NunchuckGame
             spriteBatch.Draw(BarTexture, BoostBarPos, null, Color.White, 0f, Vector2.Zero, new Vector2(Scale, ScaleY), SpriteEffects.None, 0f);
 
             // Draw the boost container
-            spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position, null, Color.Black, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
         }
 
         public void SetCurrentBoost(float boost)

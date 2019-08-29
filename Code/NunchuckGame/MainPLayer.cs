@@ -15,7 +15,7 @@ namespace NunchuckGame
         public bool Boosting = false;
         public double angle = 0f;
 
-        int speed = 30;
+        int speed = 50;
         Animation playerAnimation = new Animation();
 
         public Texture2D arrowTexture { get; set; }
@@ -42,25 +42,25 @@ namespace NunchuckGame
            
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                angle += (250 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                angle += (350 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
 
-                angle -= (250 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                angle -= (350 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             if ((Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Up)) && BoostMeter>0)
             {
-                magnitude = 450f;
+                magnitude = 500f;
                 BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds * 0.5f;
                 Boosting = true;
-                speed = 10;
+                speed = 5;
             }
             else
             {
                 Boosting = false;
-                speed = 60;
-                magnitude = 200f;
+                speed = 50;
+                magnitude = 250f;
                 if(BoostMeter<0.6f && (Keyboard.GetState().IsKeyUp(Keys.Space) || Keyboard.GetState().IsKeyUp(Keys.Up)))
                     BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/4;
             }
@@ -79,13 +79,13 @@ namespace NunchuckGame
             {
                 Position.X  = ScreenSize.Width - 25-Rectangle.Width;
             }
-            if (Position.Y < 25f)
+            if (Position.Y < 100f)
             {
-                Position.Y = 25f;
+                Position.Y = 100f;
             }
-            if ((Position.Y + Rectangle.Height) > ScreenSize.Height - 25)
+            if ((Position.Y + Rectangle.Height) > ScreenSize.Height - 180)
             {
-                Position.Y = ScreenSize.Height - 25 - Rectangle.Height;
+                Position.Y = ScreenSize.Height - 180 - Rectangle.Height;
             }
             
 

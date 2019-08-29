@@ -16,6 +16,7 @@ namespace NunchuckGame
         Vector2 BackgroundWidth= new Vector2(0) ;
         Rectangle srcRec;
         int nooFRec;
+        bool flip = false;
         Rectangle[] desRec;
         int w = 0, h = 0;
         Viewport screenSize;
@@ -24,34 +25,70 @@ namespace NunchuckGame
         public void Intiliaze(Texture2D background, Viewport screenSize)
         {
             Background = background;
+           
             this.screenSize = screenSize;
-            nooFRec = (int)(screenSize.Width / Background.Width * screenSize.Height / Background.Height);
-            nooFRec += 4;
+            
+
+        }
+        public void  Blocks()
+        {
+            nooFRec = (int)(screenSize.Width / (2 * Background.Width) * screenSize.Height / (2 * Background.Height));
+            nooFRec += 20;
             srcRec = new Rectangle(0, 0, Background.Width, Background.Height);
             desRec = new Rectangle[nooFRec];
             int i = 0;
-            while(h<screenSize.Height)
+            while (h < screenSize.Height)
             {
-               
-                while(w<screenSize.Width)
+
+                while (w < screenSize.Width)
                 {
-                    desRec[i] = new Rectangle(w, h, Background.Width, Background.Height);
+                    desRec[i] = new Rectangle(w, h, Background.Width * 2, Background.Height * 2);
                     i++;
-                    w += Background.Width;
+                    w += Background.Width * 2;
                 }
                 w = 0;
-                h += Background.Height;
+                h += Background.Height * 2;
             }
-
+        }
+        public void walls( int start )
+        {
+            nooFRec = (int)(screenSize.Width / Background.Width);
+            srcRec = new Rectangle(0, 0, Background.Width, Background.Height);
+            desRec = new Rectangle[nooFRec];
+            int i = 0;
+            if(start==0)
+            {
+                flip = true;
+            }
+            h = start;
+                while (w < screenSize.Width)
+                {
+                    desRec[i] = new Rectangle(w, h, Background.Width*2 , Background.Height*2);
+                    i++;
+                    w += Background.Width * 2;
+                }
+               
+            
         }
         public void draw(SpriteBatch spriteBatch)
         {
-                  
+            SpriteEffects test;
+            if (flip)
+            {
+               test = SpriteEffects.FlipVertically;
+            }
+            else
+            {
+                test = SpriteEffects.None;
+            }
+          
             for(int i=0; i< nooFRec; i++)
             {
-                spriteBatch.Draw(Background, desRec[i], srcRec, Color.Wheat);
+                spriteBatch.Draw(Background, desRec[i], srcRec,Color.White, 0f, new Vector2(0, 0), test, 0f);
+                
             }
-               
+            
+
 
         }
 
