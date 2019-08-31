@@ -65,7 +65,7 @@ namespace NunchuckGame
                     BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/4;
             }
             
-            Velocity.X = (float)Math.Cos(angle);
+            Velocity.X = (float)Math.Cos(angle);    
             Velocity.Y = (float)Math.Sin(angle);
 
             Velocity = Vector2.Multiply(Velocity, magnitude);
@@ -122,7 +122,7 @@ namespace NunchuckGame
 
         public void Initialize()
         {
-            playerAnimation.Initialize(Texture, Position, 65, 37, 8, speed, Color.White, 2f, true);
+            playerAnimation.Initialize(Texture, Position, 137, 78, 8, speed, Color.White, 1.5f, true);
             Scale = playerAnimation.scale;
         }
         public void Update(GameTime gameTime)
@@ -135,15 +135,15 @@ namespace NunchuckGame
             }
             else if(angle >= (Math.PI * 3) / 4 || angle <= -(Math.PI * 3) / 4)
             {
-                srcY = 74;
+                srcY = playerAnimation.FrameHeight*2;
             }
             else if (angle >= -(Math.PI * 3) / 4 && angle <= -(Math.PI) / 4)
             {
-                srcY = 37;
+                srcY = playerAnimation.FrameHeight*1;
             }
             else if (angle >= -(Math.PI) / 4 || angle <= Math.PI / 4)
             {
-                srcY = 111;
+                srcY = playerAnimation.FrameHeight*3;
             }
             playerAnimation.Update(gameTime, Position, speed,srcY);
         }

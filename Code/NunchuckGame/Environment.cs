@@ -13,7 +13,6 @@ namespace NunchuckGame
     class Environment
     {
         Texture2D Background;
-        Vector2 BackgroundWidth= new Vector2(0) ;
         Rectangle srcRec;
         int nooFRec;
         bool flip = false;
@@ -25,42 +24,52 @@ namespace NunchuckGame
         public void Intiliaze(Texture2D background, Viewport screenSize)
         {
             Background = background;
-           
             this.screenSize = screenSize;
             
 
         }
         public void  Blocks()
         {
-            nooFRec = (int)(screenSize.Width / (2 * Background.Width) * screenSize.Height / (2 * Background.Height));
-            nooFRec += 200;
+            nooFRec = ((int)(screenSize.Width / (int)(2.75f* Background.Width)+1) * ((int)screenSize.Height / (int)(2.75f * Background.Height)+1));
             srcRec = new Rectangle(0, 0, Background.Width, Background.Height);
             desRec = new Rectangle[nooFRec];
             int i = 0;
-            while (h < screenSize.Height)
+            while (h <= screenSize.Height)
             {
 
-                while (w < screenSize.Width)
+                while (w <= screenSize.Width)
                 {
-                    desRec[i] = new Rectangle(w, h, Background.Width * 2, Background.Height * 2);
+                    desRec[i] = new Rectangle(w, h, (int)(Background.Width * 2.75f), (int)(Background.Height * 2.75f));
                     i++;
-                    w += Background.Width * 2;
+                    w += (int)(Background.Width * 2.75f);
                 }
                 w = 0;
-                h += Background.Height * 2;
+                h +=(int)( Background.Height * 2.75f);
             }
         }
-        public void walls( int start )
+        public void fences(int x, int y)
         {
-            nooFRec = (int)(screenSize.Width / Background.Width);
+            nooFRec = (int)(screenSize.Width / ( Background.Width) + 1);
             srcRec = new Rectangle(0, 0, Background.Width, Background.Height);
             desRec = new Rectangle[nooFRec];
+            h = y;
+            w = x;
             int i = 0;
-            if(start==0)
+            while (w < screenSize.Width)
             {
-                flip = true;
+                desRec[i] = new Rectangle(w, h, Background.Width*2, Background.Height*2);
+                i++;
+                w += Background.Width*2;
             }
-            h = start;
+        }
+        public void walls( int x, int y)
+        {
+            nooFRec = (int)(screenSize.Width / (2 * Background.Width) + 1);
+            srcRec = new Rectangle(0, 0, Background.Width, Background.Height);
+            desRec = new Rectangle[nooFRec];
+            h = y;
+            w = x;
+            int i = 0;
                 while (w < screenSize.Width)
                 {
                     desRec[i] = new Rectangle(w, h, Background.Width*2 , Background.Height*2);
