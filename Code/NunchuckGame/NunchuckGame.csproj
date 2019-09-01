@@ -45,11 +45,11 @@
     <Compile Include="BoostMeter.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="MainPlayer.cs" />
+    <Compile Include="Obstacle.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="NunchuckGame.cs" />
     <Compile Include="Pickups.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

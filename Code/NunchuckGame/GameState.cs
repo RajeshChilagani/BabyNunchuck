@@ -9,12 +9,12 @@ namespace NunchuckGame
     {
         public int Score;
         public SpriteFont font;
-        private List<Pickup> ActivePickups;
-        private List<Pickup> InactivePickups;
+        private List<Pickup> Enemies;
         public bool IsGameOver;
         private Random random;
         double TimeToSpawn;
         float Difficulty = 0.1f; // Higher means more difficult
+        int EnemiesKilled = 0;
 
         float MaxComboTime = 0.5f;
         float ComboTimer = 0f;
@@ -23,23 +23,42 @@ namespace NunchuckGame
 
         public List<Sprite> Obstacles;
 
-        public GameState()
+        public GameState(Rectangle screenBounds)
         {
             Obstacles = new List<Sprite>();
-            Sprite obstacle1 = new Sprite();
-            Sprite obstacle2 = new Sprite();
-            obstacle1.Position = new Vector2(100, 100);
-            obstacle2.Position = new Vector2(800, 600);
-            obstacle1.Scale = 0.1f;
-            obstacle2.Scale = 0.1f;
+            float obstaclesScale = 2f;
+            Sprite obstacle1 = new Obstacle();
+            Sprite obstacle2 = new Obstacle();
+            Sprite obstacle3 = new Obstacle();
+            Sprite obstacle4 = new Obstacle();
+            Sprite obstacle5 = new Obstacle();
+            Sprite obstacle6 = new Obstacle();
+            Sprite obstacle7 = new Obstacle();
+            obstacle1.Position = new Vector2(screenBounds.Width / 7, screenBounds.Height / 5);
+            obstacle2.Position = new Vector2(screenBounds.Width / 7, screenBounds.Height / 5 + obstaclesScale * 32);
+            obstacle3.Position = new Vector2(screenBounds.Width / 7 + obstaclesScale * 64, screenBounds.Height / 5);
+            obstacle4.Position = new Vector2(screenBounds.Width * 6 / 7 - obstaclesScale * 64, screenBounds.Height * 3 / 4 - obstaclesScale * 96);
+            obstacle5.Position = new Vector2(screenBounds.Width * 6 / 7 - obstaclesScale * 128, screenBounds.Height * 3 / 4 - obstaclesScale * 64);
+            obstacle6.Position = new Vector2(screenBounds.Width * 6 / 7 - obstaclesScale * 64, screenBounds.Height * 3 / 4 - obstaclesScale * 64);
+            obstacle7.Position = new Vector2(screenBounds.Width / 2 - obstaclesScale * 32, (obstacle1.Position.Y + obstacle6.Position.Y) / 2);
+
             Obstacles.Add(obstacle1);
             Obstacles.Add(obstacle2);
+            Obstacles.Add(obstacle3);
+            Obstacles.Add(obstacle4);
+            Obstacles.Add(obstacle5);
+            Obstacles.Add(obstacle6);
+            Obstacles.Add(obstacle7);
+
+            foreach (Sprite obstacle in Obstacles)
+            {
+                obstacle.Scale = obstaclesScale;
+            }
 
             random = new Random();
             TimeToSpawn = 0f;
             Score = 0;
-            ActivePickups = new List<Pickup>();
-            InactivePickups = new List<Pickup>();
+            Enemies = new List<Pickup>();
             IsGameOver = false;
         }
 
@@ -51,15 +70,11 @@ namespace NunchuckGame
             }
         }
 
-        public void AddActivePickup(Pickup pickup)
+        public void HandleEnemyDestroyed(Pickup pickup)
         {
             ComboTimer = MaxComboTime;
             ComboCount++;
             Score += 1 << (ComboCount - 1);
-            if (pickup.GetDuration() > 0)
-                ActivePickups.Add(pickup);
-            else if (pickup.GetEndsGame())
-                IsGameOver = true;
         }
 
         public void Update(GameTime gameTime, Rectangle playArea, ref MainPlayer player)
@@ -77,7 +92,7 @@ namespace NunchuckGame
             TimeToSpawn -= deltaTime;
             if (TimeToSpawn <= 0)
             {
-                float DifficultyModifier = 1f / (((float)Score * Difficulty) + 1f);
+                float DifficultyModifier = 1f / (((float)EnemiesKilled * Difficulty) + 1f);
                 TimeToSpawn = (float)random.Next(875, 4376) * DifficultyModifier / 1000;
 
                 Pickup pickup;
@@ -119,7 +134,7 @@ namespace NunchuckGame
                     if (spawnAttempts >= 10)
                         break;
 
-                    foreach (Pickup other in InactivePickups)
+                    foreach (Pickup other in Enemies)
                     {
                         isColliding = false;
                         if (pickup.IsColliding(other))
@@ -131,67 +146,71 @@ namespace NunchuckGame
                 }
                 while (isColliding);
 
-                InactivePickups.Add(pickup);
+                Enemies.Add(pickup);
             }
 
+            // Check enemy collisions. This is done the naive O(n^2) way. If given more time, something like
+            // an axis-aligned bounding box tree could be implemented.
             int count = 0;
-            while (count < ActivePickups.Count)
+            while (count < Enemies.Count)
             {
-                // Remove pickups whose effects should no longer be active
-                ActivePickups[count].UpdateDuration(gameTime.ElapsedGameTime.TotalSeconds);
-                if (ActivePickups[count].GetRemainingDuration() <= 0)
+                // Delete enemies who are dead and have had their animation finish
+                if (Enemies[count].NeedsDeletion())
                 {
-                    ActivePickups.RemoveAt(count);
+                    Enemies.RemoveAt(count);
                     continue;
                 }
 
-                // Update the player from the effects of the pickup
-                if (ActivePickups[count].GetAffectsPlayer())
-                    //ActivePickups[count].Update(ref player);
-
-                count++;
-            }
-
-            count = 0;
-            while (count < InactivePickups.Count)
-            {
-                InactivePickups[count].Update(deltaTime, playerCenter);
-                InactivePickups[count].Update(deltaTime);
+                // Update enemies
+                Enemies[count].Update(deltaTime, playerCenter);
+                Enemies[count].Update(gameTime);
 
                 // Remove the object if it has left the screen
-                if (InactivePickups[count].IsOutOfBounds(playArea))
+                if (Enemies[count].IsOutOfBounds(playArea))
                 {
-                    InactivePickups.RemoveAt(count);
+                    Enemies.RemoveAt(count);
                     continue;
                 }
 
-                for (int i = 0; i < InactivePickups.Count; i++)
+                // Make enemies somewhat bounce off one another
+                for (int i = 0; i < Enemies.Count; i++)
                 {
-                    if (InactivePickups[count].IsColliding(InactivePickups[i]))
+                    if (Enemies[count].IsColliding(Enemies[i]))
                     {
-                        Pickup temp1 = InactivePickups[count];
-                        Pickup temp2 = InactivePickups[i];
+                        Pickup temp1 = Enemies[count];
+                        Pickup temp2 = Enemies[i];
 
                         Pickup.Collide(ref temp1, ref temp2);
 
-                        InactivePickups[count] = temp1;
-                        InactivePickups[i] = temp2;
+                        Enemies[count] = temp1;
+                        Enemies[i] = temp2;
                     }
                 }
 
-                if (player.IsColliding(InactivePickups[count]))
+                // Kill the enemy or the player if the two collide
+                if (player.IsColliding(Enemies[count]))
                 {
                     if (player.Boosting)
                     {
-                        AddActivePickup(InactivePickups[count]);
-                        InactivePickups.RemoveAt(count);
-                        continue;
+                        HandleEnemyDestroyed(Enemies[count]);
+                        Enemies[count].Kill();
+                        EnemiesKilled++;
                     }
                     else
                     {
                         IsGameOver = true;
                     }
                 }
+
+                // Kill the enemies if they hit any obstacles
+                //for (int i = 0; i < Obstacles.Count; i++)
+                //{
+                //    if (Enemies[count].IsColliding(Obstacles[i]))
+                //    {
+                //        Enemies[count].Kill();
+                //        break;
+                //    }
+                //}
 
                 count++;
             }
@@ -207,9 +226,10 @@ namespace NunchuckGame
             foreach (Sprite obstacle in Obstacles)
             {
                 obstacle.Draw(spriteBatch);
+                Obstacle.Depth -= 0.00001f;
             }
 
-            foreach (Pickup pickup in InactivePickups)
+            foreach (Pickup pickup in Enemies)
             {
                 pickup.Draw(spriteBatch);
             }
@@ -240,11 +260,11 @@ namespace NunchuckGame
         public void RestartGame()
         {
             IsGameOver = false;
-            ActivePickups.Clear();
-            InactivePickups.Clear();
+            Enemies.Clear();
             Score = 0;
             ComboTimer = 0.5f;
             ComboCount = 0;
+            EnemiesKilled = 0;
         }
     }
 }

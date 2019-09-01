@@ -74,11 +74,11 @@ namespace NunchuckGame
 
 
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, float depth = 0.5f)
         {
             if (Active)
             {
-                spriteBatch.Draw(spriteSheet, desRect, srcRect, color);
+                spriteBatch.Draw(spriteSheet, desRect, srcRect, color, 0f, Vector2.Zero, SpriteEffects.None, depth);
             }
         }
     }

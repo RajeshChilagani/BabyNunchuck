@@ -79,7 +79,7 @@ namespace NunchuckGame
                
             
         }
-        public void draw(SpriteBatch spriteBatch)
+        public void draw(SpriteBatch spriteBatch, float depth = 1f)
         {
             SpriteEffects test;
             if (flip)
@@ -93,7 +93,7 @@ namespace NunchuckGame
           
             for(int i=0; i< nooFRec; i++)
             {
-                spriteBatch.Draw(Background, desRec[i], srcRec,Color.White, 0f, new Vector2(0, 0), test, 0f);
+                spriteBatch.Draw(Background, desRec[i], srcRec,Color.White, 0f, new Vector2(0, 0), test, depth);
                 
             }
             

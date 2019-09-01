@@ -14,9 +14,11 @@ namespace NunchuckGame
         protected bool EndsGame;
         protected float Rotation;
         protected float SpinSpeed;
+        protected bool IsDead = false;
 
         // Textures for the various pickups
         static public Texture2D PickupTexture;
+        static public Texture2D DeathTexture;
         static public float PickupScale;
         static public int PickupHeight()
         {
@@ -51,14 +53,20 @@ namespace NunchuckGame
             Scale = Pickup.PickupScale;
         }
 
+        public virtual void Kill()
+        {
+            IsDead = true;
+            Velocity = Vector2.Zero;
+        }
        
         public void UpdateDuration(double secsElapsed)
         {
             RemainingDuration -= secsElapsed;
         }
 
-        public virtual void Update(double secsElapsed)
+        public virtual void Update(GameTime gameTime)
         {
+            double secsElapsed = gameTime.ElapsedGameTime.TotalSeconds;
             Rotation = (Rotation + (float)secsElapsed * SpinSpeed) % 360;
             Position += Vector2.Multiply(Velocity, (float)(secsElapsed));
         }
@@ -99,7 +107,12 @@ namespace NunchuckGame
             return EndsGame;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual bool NeedsDeletion()
+        {
+            return IsDead;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, Vector2.Zero, Scale,
                 SpriteEffects.None, 0f);
@@ -141,26 +154,51 @@ namespace NunchuckGame
 
     class FollowPickup : Pickup
     {
+        int AnimationDuration = 35;
+        int DeathAnimDuration = 50;
+        Animation EnemyAnim = new Animation();
+
         float Magnitude = 1f;
         public FollowPickup(Vector2 position, Vector2 direction, float speed) : base(position, direction, speed)
         {
             ScoreChange = 1;
             Texture = Pickup.PickupTexture;
             Magnitude = speed;
+            EnemyAnim.Initialize(Texture, Position, 32, 32, 4, AnimationDuration, Color.White, Scale, true);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            // Update position
+            base.Update(gameTime);
+
+            // Update the enemy animation
+            if (!IsDead)
+                EnemyAnim.Update(gameTime, Position, AnimationDuration, 0);
+            else
+                EnemyAnim.Update(gameTime, Position - new Vector2(Scale * 16, Scale * 16), DeathAnimDuration, 0);
         }
 
         public override void Update(double secsElapsed, Vector2 trackPos)
         {
+            if (IsDead)
+                return;
+
+            // Make the enemy rotate towards the player. This is a sort of angle lerp that I created since
+            // the Vector2 lerp wasn't working initially (something which I now think was due to a minor typo).
             Vector2 direction = trackPos - new Vector2(Position.X + this.Rectangle.Width / 2, Position.Y + this.Rectangle.Height / 2);
             direction.Normalize();
             double targetAngle = Math.Atan2(direction.Y, direction.X);
             double currentAngle = Math.Atan2(Velocity.Y, Velocity.X);
 
+            // Find minimum distance the enemy has to rotate so the enemy rotates using whichever direction
+            // would point them at the player faster.
             if (Math.Abs((targetAngle + 2f * Math.PI) - currentAngle) < Math.Abs(targetAngle - currentAngle))
                 targetAngle += 2f * Math.PI;
             else if (Math.Abs(targetAngle - (currentAngle + 2f * Math.PI)) > Math.Abs(targetAngle - Math.PI))
                 currentAngle += 2f * Math.PI;
 
+            // Restrict the enemy to not rotate past the player.
             bool Above = targetAngle > currentAngle;
             currentAngle += (targetAngle - currentAngle) * 0.5f * secsElapsed;
             if (Above && currentAngle > targetAngle)
@@ -168,10 +206,48 @@ namespace NunchuckGame
             else if (!Above && targetAngle < currentAngle)
                 currentAngle = targetAngle;
 
+            // Convert the angle back a vector.
             direction.X = (float)Math.Cos(currentAngle);
             direction.Y = (float)Math.Sin(currentAngle);
 
             Velocity = Vector2.Multiply(direction, Magnitude);
+        }
+
+        public override void Kill()
+        {
+            base.Kill();
+            Texture = DeathTexture;
+            EnemyAnim.Initialize(Texture, Position - new Vector2(Scale * 16, Scale * 16), 64, 64, 7, AnimationDuration, Color.White, Scale, false);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            float depth;
+            if (IsDead)
+                depth = 0.55f;
+            else
+                depth = 0.4f;
+
+            EnemyAnim.Draw(spriteBatch, depth);
+        }
+
+        public override Rectangle Rectangle
+        {
+            get
+            {
+                if (IsDead)
+                    return new Rectangle(-999999999, -99999999, 0, 0);
+                else
+                    return new Rectangle((int)(Position.X + (float)EnemyAnim.FrameWidth * Scale / 6f), 
+                        (int)(Position.Y + (float)EnemyAnim.FrameHeight * Scale / 6f), 
+                        (int)((float)EnemyAnim.FrameWidth * Scale / 1.5), 
+                        (int)((float)EnemyAnim.FrameHeight * Scale / 1.5));
+            }
+        }
+
+        public override bool NeedsDeletion()
+        {
+            return IsDead && !EnemyAnim.Active;
         }
     }
 
@@ -188,36 +264,36 @@ namespace NunchuckGame
         }
     }
 
-    class TempPickup : Pickup
-    {
-        private float SlowRate;
-        private float Magnitude;
+    //class TempPickup : Pickup
+    //{
+    //    private float SlowRate;
+    //    private float Magnitude;
 
-        public TempPickup(Vector2 position, Vector2 direction, float speed) : base(position, direction, speed)
-        {
-            ScoreChange = 1;
-            Texture = Pickup.PickupTexture;
-            Magnitude = speed;
-            SlowRate = 10f;
-        }
+    //    public TempPickup(Vector2 position, Vector2 direction, float speed) : base(position, direction, speed)
+    //    {
+    //        ScoreChange = 1;
+    //        Texture = Pickup.PickupTexture;
+    //        Magnitude = speed;
+    //        SlowRate = 10f;
+    //    }
 
-        public override void Update(double secsElapsed)
-        {
-            Rotation = (Rotation + (float)secsElapsed * SpinSpeed) % 360;
+    //    public override void Update(double secsElapsed)
+    //    {
+    //        Rotation = (Rotation + (float)secsElapsed * SpinSpeed) % 360;
 
-            if (Magnitude > 0f)
-            {
-                Velocity.Normalize();
-                Magnitude -= (float)(SlowRate * secsElapsed);
-                if (Magnitude < 0f)
-                    Magnitude = 0f;
+    //        if (Magnitude > 0f)
+    //        {
+    //            Velocity.Normalize();
+    //            Magnitude -= (float)(SlowRate * secsElapsed);
+    //            if (Magnitude < 0f)
+    //                Magnitude = 0f;
 
-                Velocity = Vector2.Multiply(Velocity, Magnitude);
-            }
+    //            Velocity = Vector2.Multiply(Velocity, Magnitude);
+    //        }
 
-            Position += Vector2.Multiply(Velocity, (float)(secsElapsed));
-        }
-    }
+    //        Position += Vector2.Multiply(Velocity, (float)(secsElapsed));
+    //    }
+    //}
 
     class SpeedPickup : Pickup
     {

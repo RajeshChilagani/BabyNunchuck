@@ -47,7 +47,7 @@ namespace NunchuckGame
         {
             
             
-            gameState = new GameState();
+            gameState = new GameState(GraphicsDevice.Viewport.Bounds);
             boostMeter = new BoostMeter();
             env = new Environment();
             topBorder = new Environment();
@@ -83,12 +83,13 @@ namespace NunchuckGame
 
             //arrow = new MainPlayer(new Vector2(GraphicsDevice.Viewport.Width / 2 - mainTexture.Width / 2, GraphicsDevice.Viewport.Height / 2 - mainTexture.Height / 2), new Vector2(50));
 
-            Pickup.PickupTexture = Content.Load<Texture2D>("Enemy");
-            Pickup.PickupScale = 2f;
+            Pickup.PickupTexture = Content.Load<Texture2D>("NinjaStar");
+            Pickup.DeathTexture = Content.Load<Texture2D>("EnemyDeath");
+            Pickup.PickupScale = 3f;
             mainChar.LoadTexture(mainTexture, arrowTexture, baseTexture);
             mainChar.Initialize();
 
-            gameState.SetObstaclesTexture(Content.Load<Texture2D>("player"));
+            gameState.SetObstaclesTexture(Content.Load<Texture2D>("Block1"));
 
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
@@ -174,17 +175,18 @@ namespace NunchuckGame
             GraphicsDevice.Clear(Color.White);
 
             // Start drawing
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.BackToFront);
 
             // Draw the Player
-            env.draw(spriteBatch);
-            topBorder.draw(spriteBatch);
-            topFence.draw(spriteBatch);
-            botBorder.draw(spriteBatch);
-            botFence.draw(spriteBatch);
+            env.draw(spriteBatch, 1f);
+            topBorder.draw(spriteBatch, 0.99f);
+            topFence.draw(spriteBatch, 0.98f);
+            botBorder.draw(spriteBatch, 0.97f);
 
             mainChar.Draw(spriteBatch);
-            
+
+            botFence.draw(spriteBatch, 0.41f);
+
             if (!gameState.IsGameOver)
             {  
                gameState.Draw(spriteBatch,ref mainChar,gameTime);

@@ -87,24 +87,49 @@ namespace NunchuckGame
             {
                 Position.Y = ScreenSize.Height - 180 - Rectangle.Height;
             }
-            
+
+            Rectangle playerRect = this.Rectangle;
+
+            int proximity = 999999999;
             foreach (Sprite obstacle in gameState.Obstacles)
             {
-                if (this.IsTouchingLeft(obstacle))
+                Rectangle obstacleRect = obstacle.Rectangle;
+                int minHorizontal = Math.Min(Math.Abs(obstacleRect.Left - playerRect.Right), Math.Abs(playerRect.Left - obstacleRect.Right));
+                int minVertical = Math.Min(Math.Abs(obstacleRect.Top - playerRect.Bottom), Math.Abs(playerRect.Top - obstacleRect.Bottom));
+                if (minHorizontal < minVertical)
                 {
-                    Position.X = obstacle.Rectangle.X - Rectangle.Width - (Rectangle.X - Position.X);
+                    if (this.IsTouchingLeft(obstacle))
+                    {
+                        Position.X = obstacleRect.X - playerRect.Width - (playerRect.X - Position.X);
+                    }
+                    else if (this.IsTouchingRight(obstacle))
+                    {
+                        Position.X = obstacle.Rectangle.X + obstacle.Rectangle.Width - (Rectangle.X - Position.X);
+                    }
                 }
-                else if (this.IsTouchingRight(obstacle))
+                else
                 {
-                    Position.X = obstacle.Rectangle.X + obstacle.Rectangle.Width - (Rectangle.X - Position.X);
+                    if (this.IsTouchingTop(obstacle))
+                    {
+                        Position.Y = obstacle.Rectangle.Y - Rectangle.Height - (Rectangle.Y - Position.Y);
+                    }
+                    else if (this.IsTouchingBottom(obstacle))
+                    {
+                        Position.Y = obstacle.Rectangle.Y + obstacle.Rectangle.Height - (Rectangle.Y - Position.Y);
+                    }
                 }
-                else if (this.IsTouchingTop(obstacle))
+
+                if (minVertical + minHorizontal < proximity)
                 {
-                    Position.Y = obstacle.Rectangle.Y - Rectangle.Height - (Rectangle.Y - Position.Y);
-                }
-                else if (this.IsTouchingBottom(obstacle))
-                {
-                    Position.Y = obstacle.Rectangle.Y + obstacle.Rectangle.Height - (Rectangle.Y - Position.Y);
+                    proximity = minVertical + minHorizontal;
+                    if (playerRect.Bottom > obstacleRect.Bottom)
+                    {
+                        Obstacle.Depth = 0.59f;
+                    }
+                    else
+                    {
+                        Obstacle.Depth = 0.45f;
+                    }
                 }
             }
         }
@@ -112,12 +137,9 @@ namespace NunchuckGame
      
         public override void Draw(SpriteBatch spriteBatch)
         {
-            
-            
-            spriteBatch.Draw(baseTexture, Position, null, Color.White, 0f, new Vector2(-25,-25), 1.5f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(baseTexture, new Vector2((float)(Rectangle.Center.X - (playerAnimation.FrameWidth * Scale * 0.05)), (float)Rectangle.Bottom), null, Color.White, 0f, new Vector2(baseTexture.Width / 2, baseTexture.Height / 2), Scale * 1.5f, SpriteEffects.None, 0.51f);
             playerAnimation.Draw(spriteBatch);
-            spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)angle + (float)(Math.PI / 2), new Vector2(10,40), 3f, SpriteEffects.None, 0f);
-
+            spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)angle + (float)(Math.PI / 2), new Vector2(10,40), 3f, SpriteEffects.None, 0.49f);
         }
 
         public void Initialize()
@@ -128,7 +150,6 @@ namespace NunchuckGame
         public void Update(GameTime gameTime)
         {
             int srcY=0;
-           // Console.WriteLine(angle);
             if(angle>=Math.PI/4 && angle<=(Math.PI*3)/4)
             {
                 srcY = 0;
@@ -152,8 +173,7 @@ namespace NunchuckGame
         {
             get
             {
-               // Console.WriteLine(Position.ToString());
-                return new Rectangle((int)Position.X + (int)(playerAnimation.FrameWidth * Scale) /6, (int)Position.Y + (int)(playerAnimation.FrameHeight * Scale) / 6, (int)(playerAnimation.FrameWidth * Scale/1.5), (int)(playerAnimation.FrameHeight * Scale/1.5));
+                return new Rectangle((int)(Position.X + (float)playerAnimation.FrameWidth * Scale / 6f), (int)(Position.Y + (float)playerAnimation.FrameHeight * Scale / 6f), (int)((float)playerAnimation.FrameWidth * Scale/1.5), (int)((float)playerAnimation.FrameHeight * Scale/1.5));
             }
         }
     }
