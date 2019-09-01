@@ -69,7 +69,7 @@ namespace NunchuckGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Texture2D mainTexture = this.Content.Load<Texture2D>("All_Attacks");
+            Texture2D mainTexture = this.Content.Load<Texture2D>("All Attacks_Fixed");
            // float scale = 0.3f;
 
             arrowTexture = this.Content.Load<Texture2D>("arrow-pointer");

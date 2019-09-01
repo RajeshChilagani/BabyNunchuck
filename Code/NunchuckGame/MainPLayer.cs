@@ -46,7 +46,6 @@ namespace NunchuckGame
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-
                 angle -= (350 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             if ((Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Up)) && BoostMeter>0)
@@ -54,14 +53,14 @@ namespace NunchuckGame
                 magnitude = 500f;
                 BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds * 0.5f;
                 Boosting = true;
-                speed = 5;
+                speed = 25;
             }
             else
             {
                 Boosting = false;
                 speed = 50;
                 magnitude = 250f;
-                if(BoostMeter<0.6f && (Keyboard.GetState().IsKeyUp(Keys.Space) || Keyboard.GetState().IsKeyUp(Keys.Up)))
+                if(BoostMeter<0.6f && (Keyboard.GetState().IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyUp(Keys.Up)))
                     BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/4;
             }
             
@@ -137,14 +136,14 @@ namespace NunchuckGame
      
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(baseTexture, new Vector2((float)(Rectangle.Center.X - (playerAnimation.FrameWidth * Scale * 0.05)), (float)Rectangle.Bottom), null, Color.White, 0f, new Vector2(baseTexture.Width / 2, baseTexture.Height / 2), Scale * 1.5f, SpriteEffects.None, 0.51f);
+            spriteBatch.Draw(baseTexture, new Vector2((float)(Rectangle.Center.X), (float)Rectangle.Bottom), null, Color.White, 0f, new Vector2(baseTexture.Width / 2, baseTexture.Height / 2), Scale * 1.5f, SpriteEffects.None, 0.51f);
             playerAnimation.Draw(spriteBatch);
             spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)angle + (float)(Math.PI / 2), new Vector2(10,40), 3f, SpriteEffects.None, 0.49f);
         }
 
         public void Initialize()
         {
-            playerAnimation.Initialize(Texture, Position, 137, 78, 8, speed, Color.White, 1.5f, true);
+            playerAnimation.Initialize(Texture, Position, 98, 73, 8, speed, Color.White, 1.5f, true);
             Scale = playerAnimation.scale;
         }
         public void Update(GameTime gameTime)
@@ -152,21 +151,27 @@ namespace NunchuckGame
             int srcY=0;
             if(angle>=Math.PI/4 && angle<=(Math.PI*3)/4)
             {
-                srcY = 0;
+                srcY = playerAnimation.FrameHeight;
             }
             else if(angle >= (Math.PI * 3) / 4 || angle <= -(Math.PI * 3) / 4)
             {
-                srcY = playerAnimation.FrameHeight*2;
+                srcY = playerAnimation.FrameHeight * 3;
             }
             else if (angle >= -(Math.PI * 3) / 4 && angle <= -(Math.PI) / 4)
             {
-                srcY = playerAnimation.FrameHeight*1;
+                srcY = 0;
             }
             else if (angle >= -(Math.PI) / 4 || angle <= Math.PI / 4)
             {
-                srcY = playerAnimation.FrameHeight*3;
+                srcY = playerAnimation.FrameHeight * 2;
             }
-            playerAnimation.Update(gameTime, Position, speed,srcY);
+
+            if (!Boosting)
+            {
+                srcY += playerAnimation.FrameHeight * 4;
+            }
+
+            playerAnimation.Update(gameTime, Position, speed, srcY);
         }
 
         public override Rectangle Rectangle
