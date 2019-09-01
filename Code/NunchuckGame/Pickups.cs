@@ -114,8 +114,7 @@ namespace NunchuckGame
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, Vector2.Zero, Scale,
-                SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, Vector2.Zero, Scale, SpriteEffects.None, 0f);
         }
 
         static public void Collide(ref Pickup pickup1, ref Pickup pickup2)

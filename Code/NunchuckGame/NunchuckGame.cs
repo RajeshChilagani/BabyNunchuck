@@ -20,7 +20,16 @@ namespace NunchuckGame
         Environment topFence;
         Environment botBorder;
         Environment botFence;
-
+        Environment leftBorder;
+        Environment leftFence;
+        Environment rightBorder;
+        Environment rightFence;
+        Environment DecorObj;
+        Environment DecorObj1;
+        Environment leftFenceAdj;
+        Environment leftFenceAdj2;
+        Environment rightFenceAdj;
+        Environment rightFenceAdj2;
 
 
         Texture2D arrowTexture;
@@ -54,6 +63,16 @@ namespace NunchuckGame
             topFence = new Environment();
             botBorder = new Environment();
             botFence = new Environment();
+            leftBorder = new Environment();
+            leftFence = new Environment();
+            rightBorder = new Environment();
+            rightFence = new Environment();
+            DecorObj = new Environment();
+            DecorObj1 = new Environment();
+            leftFenceAdj = new Environment();
+            leftFenceAdj2 = new Environment();
+            rightFenceAdj = new Environment();
+            rightFenceAdj2 = new Environment();
 
 
             //gameState.AddActivePickup(new SpeedPickup());
@@ -105,20 +124,38 @@ namespace NunchuckGame
             Texture2D Fence = Content.Load<Texture2D>("Fence");
             Texture2D BotWall = Content.Load<Texture2D>("BotWall");
             Texture2D SideWall = Content.Load<Texture2D>("SideWall");
+            Texture2D SideFence = Content.Load<Texture2D>("FenceSide");
+            Texture2D FenceEnd = Content.Load<Texture2D>("FenceSideN");
+            Texture2D Decor = Content.Load<Texture2D>("Decor");
             env.Intiliaze(Content.Load<Texture2D>("Background"),GraphicsDevice.Viewport);
             env.Blocks();
             //top
             topBorder.Intiliaze(TopWall, GraphicsDevice.Viewport);
-            topBorder.walls(0,0);
+            topBorder.walls(0,0,3f,true,GraphicsDevice.Viewport.Width);
             topFence.Intiliaze(Fence, GraphicsDevice.Viewport);
-            topFence.fences(0, TopWall.Height*2- Fence.Height*2);
+            topFence.fences(SideWall.Width*2, TopWall.Height*3- Fence.Height*2+8,2f,true,GraphicsDevice.Viewport.Width-SideWall.Width*2);
             //bottom
             botBorder.Intiliaze(BotWall, GraphicsDevice.Viewport);
-            botBorder.walls(SideWall.Width*2,GraphicsDevice.Viewport.Height- BotWall.Height*2);
+            botBorder.walls(SideWall.Width*2,GraphicsDevice.Viewport.Height- BotWall.Height,1f,true, GraphicsDevice.Viewport.Width - SideWall.Width * 2);
             botFence.Intiliaze(Fence, GraphicsDevice.Viewport);
-            botFence.fences(SideWall.Width * 2, GraphicsDevice.Viewport.Height - BotWall.Height * 2-Fence.Height*2);
+            botFence.fences(SideWall.Width*2, GraphicsDevice.Viewport.Height - BotWall.Height-Fence.Height*2,2f,true, GraphicsDevice.Viewport.Width - SideWall.Width * 2);
             //leftSide
-
+            leftBorder.Intiliaze(SideWall, GraphicsDevice.Viewport);
+            leftBorder.walls(0, (int)(TopWall.Height*3f-Fence.Height/2), 2f, false,GraphicsDevice.Viewport.Height);
+            leftFence.Intiliaze(SideFence, GraphicsDevice.Viewport);
+            leftFence.fences(SideWall.Width*2-(SideFence.Width), (int)(TopWall.Height * 3f), 2f,false, GraphicsDevice.Viewport.Height - BotWall.Height - Fence.Height);
+            //rightSide
+            rightBorder.Intiliaze(SideWall, GraphicsDevice.Viewport);
+            rightBorder.walls(GraphicsDevice.Viewport.Width-TopWall.Width*2, (int)(TopWall.Height * 3f-Fence.Height/2), 2f, false, GraphicsDevice.Viewport.Height);
+            rightFence.Intiliaze(SideFence, GraphicsDevice.Viewport);
+            rightFence.fences(GraphicsDevice.Viewport.Width - TopWall.Width * 2 - SideFence.Width, (int)(TopWall.Height * 3f), 2f, false, GraphicsDevice.Viewport.Height - BotWall.Height-Fence.Height);
+            //left fence end
+            DecorObj.Intiliaze(Decor,GraphicsDevice.Viewport);
+            DecorObj1.Intiliaze(Decor, GraphicsDevice.Viewport);
+            leftFenceAdj.Intiliaze(FenceEnd, GraphicsDevice.Viewport);
+            leftFenceAdj2.Intiliaze(FenceEnd, GraphicsDevice.Viewport);
+            rightFenceAdj.Intiliaze(FenceEnd, GraphicsDevice.Viewport);
+            rightFenceAdj2.Intiliaze(FenceEnd, GraphicsDevice.Viewport);
 
         }
 
@@ -177,16 +214,32 @@ namespace NunchuckGame
             // Start drawing
             spriteBatch.Begin(SpriteSortMode.BackToFront);
 
-            // Draw the Player
-            env.draw(spriteBatch, 1f);
-            topBorder.draw(spriteBatch, 0.99f);
-            topFence.draw(spriteBatch, 0.98f);
-            botBorder.draw(spriteBatch, 0.97f);
 
+
+
+
+            env.draw(spriteBatch, 1f);
+            topBorder.draw(spriteBatch,0.99f);
+            botBorder.draw(spriteBatch,0.4f);
+            leftBorder.draw(spriteBatch, 0.92f,"hori");
+            rightBorder.draw(spriteBatch, 0.39f);
+
+            // Draw the Player
             mainChar.Draw(spriteBatch);
 
-            botFence.draw(spriteBatch, 0.41f);
+            topFence.draw(spriteBatch, 0.98f);
+            botFence.draw(spriteBatch,0.39f);
 
+            DecorObj.draw(spriteBatch,2.7f,(int)(GraphicsDevice.Viewport.Width/5),0);
+            DecorObj1.draw(spriteBatch, 2.7f, (int)(GraphicsDevice.Viewport.Width - GraphicsDevice.Viewport.Width / 5 - DecorObj.Background.Width * 2.7), 0);
+
+            leftFenceAdj.draw(spriteBatch, 2f, (int)(leftBorder.Background.Width * 2 + leftFence.Background.Width - leftFenceAdj.Background.Width * 2 -5), (int)(topBorder.Background.Height * 2 + leftFence.Background.Height - leftFenceAdj.Background.Height * 2 + 15),0.91f);
+            leftFenceAdj.draw(spriteBatch, 2f, (int)(leftBorder.Background.Width * 2 + leftFence.Background.Width - leftFenceAdj.Background.Width * 2-5), (int)(GraphicsDevice.Viewport.Height-botBorder.Background.Height-botFence.Background.Height*2), 0.28f);
+            leftFenceAdj.draw(spriteBatch, 2f, (int)(GraphicsDevice.Viewport.Width-rightBorder.Background.Width*2- rightFence.Background.Width-5), (int)(topBorder.Background.Height * 2 + leftFence.Background.Height - leftFenceAdj.Background.Height * 2 + 15), 0.38f);
+            leftFenceAdj.draw(spriteBatch, 2f, (int)(GraphicsDevice.Viewport.Width - rightBorder.Background.Width * 2-rightFence.Background.Width-5), (int)(GraphicsDevice.Viewport.Height - botBorder.Background.Height - botFence.Background.Height * 2), 0.28f);
+            leftFence.draw(spriteBatch, 0.89f);
+            rightFence.draw(spriteBatch,0.37f);
+           
             if (!gameState.IsGameOver)
             {  
                gameState.Draw(spriteBatch,ref mainChar,gameTime);
@@ -205,8 +258,10 @@ namespace NunchuckGame
                 spriteBatch.DrawString(gameState.font, "Press \"R\" to Restart", new Vector2(screenWidth / 2 - 280, screenHeight / 2 + 160), Color.Black, 0f, new Vector2(0, 0), 2f, SpriteEffects.None, 0f);
             }
 
-            boostMeter.Draw(spriteBatch);
+          
+          
 
+            boostMeter.Draw(spriteBatch);
             // Stop drawing
             spriteBatch.End();
 

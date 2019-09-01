@@ -70,21 +70,21 @@ namespace NunchuckGame
             Velocity = Vector2.Multiply(Velocity, magnitude);
             
             Position += Vector2.Multiply(Velocity, (float)(gameTime.ElapsedGameTime.TotalSeconds));
-            if(Position.X < 25f)
+            if(Position.X < 110f)
             {
-                Position.X = 25f;
+                Position.X = 110f;
             }
-            if((Position.X + Rectangle.Width) > ScreenSize.Width-25)
+            if((Position.X + Rectangle.Width) > ScreenSize.Width-150)
             {
-                Position.X  = ScreenSize.Width - 25-Rectangle.Width;
+                Position.X  = ScreenSize.Width - 150-Rectangle.Width;
             }
             if (Position.Y < 100f)
             {
                 Position.Y = 100f;
             }
-            if ((Position.Y + Rectangle.Height) > ScreenSize.Height - 180)
+            if ((Position.Y + Rectangle.Height) > ScreenSize.Height - 120)
             {
-                Position.Y = ScreenSize.Height - 180 - Rectangle.Height;
+                Position.Y = ScreenSize.Height - 120 - Rectangle.Height;
             }
 
             Rectangle playerRect = this.Rectangle;
