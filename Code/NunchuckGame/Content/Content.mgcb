@@ -248,6 +248,9 @@
 /processorParam:TextureFormat=Color
 /build:gameover.png
 
+#begin Good Brush.ttf
+/copy:Good Brush.ttf
+
 #begin Left.png
 /importer:TextureImporter
 /processor:TextureProcessor
