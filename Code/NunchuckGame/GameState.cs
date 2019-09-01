@@ -203,14 +203,14 @@ namespace NunchuckGame
                 }
 
                 // Kill the enemies if they hit any obstacles
-                //for (int i = 0; i < Obstacles.Count; i++)
-                //{
-                //    if (Enemies[count].IsColliding(Obstacles[i]))
-                //    {
-                //        Enemies[count].Kill();
-                //        break;
-                //    }
-                //}
+                for (int i = 0; i < Obstacles.Count; i++)
+                {
+                    if (Enemies[count].IsColliding(Obstacles[i]))
+                    {
+                        Enemies[count].Kill();
+                        break;
+                    }
+                }
 
                 count++;
             }
