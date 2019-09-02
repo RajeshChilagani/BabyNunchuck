@@ -195,6 +195,7 @@ namespace NunchuckGame
                         HandleEnemyDestroyed(Enemies[count]);
                         Enemies[count].Kill();
                         EnemiesKilled++;
+                        player.allsounds[1].Play();
                     }
                     else
                     {

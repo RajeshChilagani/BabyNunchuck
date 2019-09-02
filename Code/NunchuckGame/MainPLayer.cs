@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using System.Collections.Generic;
 
 namespace NunchuckGame
 {
@@ -14,17 +16,18 @@ namespace NunchuckGame
         public float BoostMeter = 0.6f;
         public bool Boosting = false;
         public double angle = 0f;
-
+        public List<SoundEffect> allsounds;
         int speed = 50;
         Animation playerAnimation = new Animation();
 
         public Texture2D arrowTexture { get; set; }
         public Texture2D baseTexture { get; set; }
 
-        public MainPlayer( Vector2 position, Vector2 velocity)
+        public MainPlayer( Vector2 position, Vector2 velocity,List<SoundEffect> allsounds)
         {
             Position = position;
             Velocity = velocity;
+            this.allsounds = allsounds;
         }
         public void LoadTexture(Texture2D playerTexture, Texture2D arrowTexture, Texture2D baseTexture)
         {
@@ -40,11 +43,11 @@ namespace NunchuckGame
             
 
            
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
                 angle += (350 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            else if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 angle -= (350 * Math.PI) / 180f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
@@ -54,6 +57,7 @@ namespace NunchuckGame
                 BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds * 0.5f;
                 Boosting = true;
                 speed = 25;
+                allsounds[0].Play();
             }
             else
             {

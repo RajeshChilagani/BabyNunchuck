@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using System.Collections.Generic;
 
 namespace NunchuckGame
 {
@@ -11,11 +13,16 @@ namespace NunchuckGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+
+        //Audio
+        List<SoundEffect> allSounds;
+
+
         GameState gameState;
         MainPlayer mainChar;
         BoostMeter boostMeter;
-        Environment env;
+        //All Enivronment 
+        Environment Wood;
         Environment topBorder;
         Environment topFence;
         Environment botBorder;
@@ -36,6 +43,8 @@ namespace NunchuckGame
         Texture2D baseTexture;
         Texture2D gameOverTexture;
 
+        
+     
 
         public NunchuckGame()
         {
@@ -58,7 +67,7 @@ namespace NunchuckGame
             
             gameState = new GameState(GraphicsDevice.Viewport.Bounds);
             boostMeter = new BoostMeter();
-            env = new Environment();
+            Wood = new Environment();
             topBorder = new Environment();
             topFence = new Environment();
             botBorder = new Environment();
@@ -87,18 +96,20 @@ namespace NunchuckGame
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Texture2D mainTexture = this.Content.Load<Texture2D>("All Attacks_Fixed");
-           // float scale = 0.3f;
-
+            //Audio
+            allSounds = new List<SoundEffect>();
+            allSounds.Add(Content.Load<SoundEffect>("NunchuckSpin"));
+            allSounds.Add(Content.Load<SoundEffect>("Hit"));
+            Texture2D mainTexture = this.Content.Load<Texture2D>("Player");
             arrowTexture = this.Content.Load<Texture2D>("arrow-pointer");
-
             baseTexture = this.Content.Load<Texture2D>("base");
 
             gameOverTexture = this.Content.Load<Texture2D>("gameover");
 
             // Load the player resources
-            mainChar = new MainPlayer(new Vector2(GraphicsDevice.Viewport.Width / 2 - mainTexture.Width / 2, GraphicsDevice.Viewport.Height / 2-mainTexture.Height/2), new Vector2(50));
+            mainChar = new MainPlayer(new Vector2(GraphicsDevice.Viewport.Width / 2 - mainTexture.Width / 2, GraphicsDevice.Viewport.Height / 2-mainTexture.Height/2), new Vector2(50),allSounds);
 
             //arrow = new MainPlayer(new Vector2(GraphicsDevice.Viewport.Width / 2 - mainTexture.Width / 2, GraphicsDevice.Viewport.Height / 2 - mainTexture.Height / 2), new Vector2(50));
 
@@ -127,8 +138,8 @@ namespace NunchuckGame
             Texture2D SideFence = Content.Load<Texture2D>("FenceSide");
             Texture2D FenceEnd = Content.Load<Texture2D>("FenceSideN");
             Texture2D Decor = Content.Load<Texture2D>("Decor");
-            env.Intiliaze(Content.Load<Texture2D>("Background"),GraphicsDevice.Viewport);
-            env.Blocks();
+            Wood.Intiliaze(Content.Load<Texture2D>("Background"),GraphicsDevice.Viewport);
+            Wood.Blocks();
             //top
             topBorder.Intiliaze(TopWall, GraphicsDevice.Viewport);
             topBorder.walls(0,0,3f,true,GraphicsDevice.Viewport.Width);
@@ -156,6 +167,9 @@ namespace NunchuckGame
             leftFenceAdj2.Intiliaze(FenceEnd, GraphicsDevice.Viewport);
             rightFenceAdj.Intiliaze(FenceEnd, GraphicsDevice.Viewport);
             rightFenceAdj2.Intiliaze(FenceEnd, GraphicsDevice.Viewport);
+
+
+            
 
         }
 
@@ -218,7 +232,7 @@ namespace NunchuckGame
 
 
 
-            env.draw(spriteBatch, 1f);
+            Wood.draw(spriteBatch, 1f);
             topBorder.draw(spriteBatch,0.99f);
             botBorder.draw(spriteBatch,0.4f);
             leftBorder.draw(spriteBatch, 0.92f,"hori");
