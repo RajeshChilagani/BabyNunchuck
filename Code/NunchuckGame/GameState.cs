@@ -56,7 +56,7 @@ namespace NunchuckGame
             }
 
             random = new Random();
-            TimeToSpawn = 0f;
+            TimeToSpawn = 10f;
             Score = 0;
             Enemies = new List<Pickup>();
             IsGameOver = false;
@@ -90,7 +90,7 @@ namespace NunchuckGame
             Vector2 playerCenter = new Vector2(player.Position.X + player.Rectangle.Width / 2, player.Position.Y + player.Rectangle.Height / 2);
 
             TimeToSpawn -= deltaTime;
-            if (TimeToSpawn <= 0)
+            if (TimeToSpawn <= 0 && Enemies.Count < 7)
             {
                 float DifficultyModifier = 1f / (((float)EnemiesKilled * Difficulty) + 1f);
                 TimeToSpawn = (float)random.Next(875, 4376) * DifficultyModifier / 1000;

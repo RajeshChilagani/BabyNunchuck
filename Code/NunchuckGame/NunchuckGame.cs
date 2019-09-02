@@ -196,10 +196,8 @@ namespace NunchuckGame
 
             if(Keyboard.GetState().IsKeyDown(Keys.R) && gameState.IsGameOver==true)
             {
-                mainChar.BoostMeter = 0.6f;
+                mainChar.BoostMeter = 1.2f;
                 gameState.RestartGame();
-                
-
             }
             // Game state is updated second and may override or ignore user input
             if(!gameState.IsGameOver)
