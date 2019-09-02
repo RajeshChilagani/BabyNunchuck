@@ -61,6 +61,12 @@
 /processorParam:TextureFormat=Color
 /build:arrow-pointer.png
 
+#begin Baby_Hiyuh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Baby_Hiyuh.wav
+
 #begin Background.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -320,6 +326,12 @@
 /processorParam:TextureFormat=Compressed
 /build:File.spritefont;font.spritefont
 
+#begin GameMusic.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:GameMusic.wav
+
 #begin gameover.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -332,6 +344,12 @@
 /processorParam:TextureFormat=Color
 /build:gameover.png
 
+#begin GameSong.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:GameSong.mp3
+
 #begin Good Brush.ttf
 /copy:Good Brush.ttf
 
@@ -340,6 +358,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Hit.wav
+
+#begin Hiyuh_louder.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Hiyuh_louder.wav
 
 #begin Left.png
 /importer:TextureImporter
@@ -370,6 +394,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:NunchuckSpin.wav
+
+#begin NunchuckSpin_long.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:NunchuckSpin_long.wav
+
+#begin NunchuckSpin_Loopable.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:NunchuckSpin_Loopable.wav
 
 #begin pika.png
 /importer:TextureImporter

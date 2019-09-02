@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
+using System.Collections.Generic;
 
 namespace NunchuckGame
 {
@@ -23,6 +25,13 @@ namespace NunchuckGame
 
         public List<Sprite> Obstacles;
 
+        //sounds
+        List<SoundEffect> allSounds;
+
+        public void InitSounds(List<SoundEffect> allSounds)
+        {
+            this.allSounds = allSounds;
+        }
         public GameState(Rectangle screenBounds)
         {
             Obstacles = new List<Sprite>();
@@ -74,6 +83,26 @@ namespace NunchuckGame
         {
             ComboTimer = MaxComboTime;
             ComboCount++;
+            switch(ComboCount)
+            {
+                case 1:
+                    break;
+                case 2:
+                   
+                    allSounds[2].Play(volume:0.4f,pitch:0.2f,pan:1f);
+                    break;
+                case 3:
+
+                    allSounds[2].Play(volume: 0.6f, pitch: 0.2f, pan: 1f);
+                    break;
+                case 4:
+
+                    allSounds[2].Play(volume: 0.8f, pitch: 0.2f, pan: 1f);
+                    break;
+                default:
+                    allSounds[2].Play(volume: 1f, pitch: 0.2f, pan: 1f);
+                    break;
+            }
             Score += 1 << (ComboCount - 1);
         }
 
@@ -195,7 +224,7 @@ namespace NunchuckGame
                         HandleEnemyDestroyed(Enemies[count]);
                         Enemies[count].Kill();
                         EnemiesKilled++;
-                        player.allsounds[1].Play();
+                        player.allsounds[1].Play(volume:0.3f,pitch:0f,pan:0f);
                     }
                     else
                     {

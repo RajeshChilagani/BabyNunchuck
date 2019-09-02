@@ -18,6 +18,8 @@ namespace NunchuckGame
         public double angle = 0f;
         public List<SoundEffect> allsounds;
         int speed = 50;
+        int soundSpeed=100;
+        bool isplaying = false;
         Animation playerAnimation = new Animation();
 
         public Texture2D arrowTexture { get; set; }
@@ -57,7 +59,21 @@ namespace NunchuckGame
                 BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds * 0.5f;
                 Boosting = true;
                 speed = 25;
-                allsounds[0].Play();
+
+
+                if(soundSpeed==100)
+                {
+                    allsounds[0].Play();
+                    isplaying = true;
+                    soundSpeed = 0;
+
+                }
+                soundSpeed += 10;
+              
+               
+
+
+
             }
             else
             {
@@ -66,6 +82,8 @@ namespace NunchuckGame
                 magnitude = 250f;
                 if(BoostMeter<0.6f && (Keyboard.GetState().IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyUp(Keys.Up)))
                     BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/4;
+                soundSpeed = 0;
+               
             }
             
             Velocity.X = (float)Math.Cos(angle);    
