@@ -102,7 +102,7 @@ namespace NunchuckGame
             allSounds = new List<SoundEffect>();
             allSounds.Add(Content.Load<SoundEffect>("NunchuckSpin"));
             allSounds.Add(Content.Load<SoundEffect>("Hit"));
-            Texture2D mainTexture = this.Content.Load<Texture2D>("Player");
+            Texture2D mainTexture = this.Content.Load<Texture2D>("All Attacks_Fixed");
             arrowTexture = this.Content.Load<Texture2D>("arrow-pointer");
             baseTexture = this.Content.Load<Texture2D>("base");
 
