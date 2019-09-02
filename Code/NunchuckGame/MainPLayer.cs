@@ -20,6 +20,8 @@ namespace NunchuckGame
         int speed = 50;
         int FuryAnimDuration = 50;
         int AngryAnimDuration = 50;
+        int soundSpeed=100;
+        bool isplaying = false;
         Animation playerAnimation = new Animation();
         Animation furyAnimation = new Animation();
         Animation angryAnimation = new Animation();
@@ -65,7 +67,21 @@ namespace NunchuckGame
                 BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                 Boosting = true;
                 speed = 25;
-                allsounds[0].Play();
+
+
+                if(soundSpeed==100)
+                {
+                    allsounds[0].Play();
+                    isplaying = true;
+                    soundSpeed = 0;
+
+                }
+                soundSpeed += 10;
+              
+               
+
+
+
             }
             else
             {
@@ -74,6 +90,8 @@ namespace NunchuckGame
                 magnitude = 250f;
                 if(BoostMeter<1.2f && (Keyboard.GetState().IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyUp(Keys.Up)))
                     BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/4;
+                soundSpeed = 0;
+               
             }
             
             Velocity.X = (float)Math.Cos(angle);    

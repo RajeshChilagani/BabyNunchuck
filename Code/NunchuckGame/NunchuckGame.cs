@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 
 namespace NunchuckGame
@@ -16,7 +17,7 @@ namespace NunchuckGame
 
         //Audio
         List<SoundEffect> allSounds;
-
+        Song gameMusic;
 
         GameState gameState;
         MainPlayer mainChar;
@@ -100,8 +101,13 @@ namespace NunchuckGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //Audio
             allSounds = new List<SoundEffect>();
-            allSounds.Add(Content.Load<SoundEffect>("NunchuckSpin"));
+            allSounds.Add(Content.Load<SoundEffect>("NunchuckSpin_Loopable"));
             allSounds.Add(Content.Load<SoundEffect>("Hit"));
+            allSounds.Add(Content.Load<SoundEffect>("Hiyuh_louder"));
+            this.gameMusic = Content.Load<Song>("GameSong");
+            MediaPlayer.Play(gameMusic);
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.5f;
             Texture2D mainTexture = this.Content.Load<Texture2D>("All Attacks_Fixed");
             arrowTexture = this.Content.Load<Texture2D>("arrow-pointer");
             baseTexture = this.Content.Load<Texture2D>("base");
@@ -121,6 +127,8 @@ namespace NunchuckGame
             mainChar.LoadTexture(mainTexture, arrowTexture, baseTexture, furyTexture, angryTexture);
             mainChar.Initialize();
 
+            gameState.InitSounds(allSounds);
+            gameState.SetObstaclesTexture(Content.Load<Texture2D>("Block1"));
             gameState.SetObstaclesTexture(Content.Load<Texture2D>("Block1_transparent"));
 
             // Set the game font
