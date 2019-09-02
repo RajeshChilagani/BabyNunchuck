@@ -153,8 +153,8 @@ namespace NunchuckGame
 
     class FollowPickup : Pickup
     {
-        int AnimationDuration = 35;
-        int DeathAnimDuration = 50;
+        int AnimationDuration = 20;
+        int DeathAnimDuration = 35;
         Animation EnemyAnim = new Animation();
 
         float Magnitude = 1f;

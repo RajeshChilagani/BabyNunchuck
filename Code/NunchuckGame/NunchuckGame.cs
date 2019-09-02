@@ -236,25 +236,26 @@ namespace NunchuckGame
 
             Wood.draw(spriteBatch, 1f);
             topBorder.draw(spriteBatch,0.99f);
-            botBorder.draw(spriteBatch,0.4f);
-            leftBorder.draw(spriteBatch, 0.92f,"hori");
-            rightBorder.draw(spriteBatch, 0.39f);
+            botBorder.draw(spriteBatch,0.49f);
+            leftBorder.draw(spriteBatch, 0.45f,"hori");
+            rightBorder.draw(spriteBatch, 0.45f);
 
             // Draw the Player
             mainChar.Draw(spriteBatch);
 
             topFence.draw(spriteBatch, 0.98f);
-            botFence.draw(spriteBatch,0.39f);
+            botFence.draw(spriteBatch,0.48f);
 
-            DecorObj.draw(spriteBatch,2.7f,(int)(GraphicsDevice.Viewport.Width/5),0);
-            DecorObj1.draw(spriteBatch, 2.7f, (int)(GraphicsDevice.Viewport.Width - GraphicsDevice.Viewport.Width / 5 - DecorObj.Background.Width * 2.7), 0);
+            DecorObj.draw(spriteBatch,2.7f,(int)(GraphicsDevice.Viewport.Width/5),0,0.5f);
+            DecorObj1.draw(spriteBatch, 2.7f, (int)(GraphicsDevice.Viewport.Width - GraphicsDevice.Viewport.Width / 5 - DecorObj.Background.Width * 2.7), 0,0.5f);
+            leftFence.draw(spriteBatch, 0.42f);
+            rightFence.draw(spriteBatch, 0.42f);
 
-            leftFenceAdj.draw(spriteBatch, 2f, (int)(leftBorder.Background.Width * 2 + leftFence.Background.Width - leftFenceAdj.Background.Width * 2 -5), (int)(topBorder.Background.Height * 2 + leftFence.Background.Height - leftFenceAdj.Background.Height * 2 + 15),0.91f);
-            leftFenceAdj.draw(spriteBatch, 2f, (int)(leftBorder.Background.Width * 2 + leftFence.Background.Width - leftFenceAdj.Background.Width * 2-5), (int)(GraphicsDevice.Viewport.Height-botBorder.Background.Height-botFence.Background.Height*2), 0.28f);
-            leftFenceAdj.draw(spriteBatch, 2f, (int)(GraphicsDevice.Viewport.Width-rightBorder.Background.Width*2- rightFence.Background.Width-5), (int)(topBorder.Background.Height * 2 + leftFence.Background.Height - leftFenceAdj.Background.Height * 2 + 15), 0.38f);
-            leftFenceAdj.draw(spriteBatch, 2f, (int)(GraphicsDevice.Viewport.Width - rightBorder.Background.Width * 2-rightFence.Background.Width-5), (int)(GraphicsDevice.Viewport.Height - botBorder.Background.Height - botFence.Background.Height * 2), 0.28f);
-            leftFence.draw(spriteBatch, 0.89f);
-            rightFence.draw(spriteBatch,0.37f);
+            leftFenceAdj.draw(spriteBatch, 2f, (int)(leftBorder.Background.Width * 2 + leftFence.Background.Width - leftFenceAdj.Background.Width * 2 -5), (int)(topBorder.Background.Height * 2 + leftFence.Background.Height - leftFenceAdj.Background.Height * 2 + 15),0.43f);
+            leftFenceAdj.draw(spriteBatch, 2f, (int)(leftBorder.Background.Width * 2 + leftFence.Background.Width - leftFenceAdj.Background.Width * 2-5), (int)(GraphicsDevice.Viewport.Height-botBorder.Background.Height-botFence.Background.Height*2), 0.41f);
+            leftFenceAdj.draw(spriteBatch, 2f, (int)(GraphicsDevice.Viewport.Width-rightBorder.Background.Width*2- rightFence.Background.Width-5), (int)(topBorder.Background.Height * 2 + leftFence.Background.Height - leftFenceAdj.Background.Height * 2 + 15), 0.43f);
+            leftFenceAdj.draw(spriteBatch, 2f, (int)(GraphicsDevice.Viewport.Width - rightBorder.Background.Width * 2-rightFence.Background.Width-5), (int)(GraphicsDevice.Viewport.Height - botBorder.Background.Height - botFence.Background.Height * 2), 0.41f);
+           
            
             if (!gameState.IsGameOver)
             {  
