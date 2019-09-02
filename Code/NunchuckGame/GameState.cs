@@ -225,7 +225,7 @@ namespace NunchuckGame
                         Enemies[count].Kill();
                         EnemiesKilled++;
 
-                        player.BoostMeter += 0.2f;
+                        player.BoostMeter += 0.1f;
                         if (player.BoostMeter >= 1.2f)
                             player.BoostMeter = 1.2f;
 
