@@ -224,6 +224,11 @@ namespace NunchuckGame
                         HandleEnemyDestroyed(Enemies[count]);
                         Enemies[count].Kill();
                         EnemiesKilled++;
+
+                        player.BoostMeter += 0.2f;
+                        if (player.BoostMeter >= 1.2f)
+                            player.BoostMeter = 1.2f;
+
                         player.allsounds[1].Play(volume:0.3f,pitch:0f,pan:0f);
                     }
                     else
