@@ -46,7 +46,7 @@ namespace NunchuckGame
                 float ScaleY = Scale * CurrentBoost / MaxBoost;
                 BoostBarPos.X += (int)(6f * Scale);
                 BoostBarPos.Y += (int)(7f * Scale) + (MaxSize - MaxSize * ScaleY / Scale);
-                spriteBatch.Draw(BarTexture, BoostBarPos, null, Color.White, 0f, Vector2.Zero, new Vector2(Scale, ScaleY), SpriteEffects.None, 0f);
+                spriteBatch.Draw(BarTexture, BoostBarPos, null, Color.White, 0f, Vector2.Zero, new Vector2(Scale, ScaleY), SpriteEffects.None, 0.01f);
 
                 // Draw the boost container
                 spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
@@ -54,7 +54,7 @@ namespace NunchuckGame
             }
             else
             {
-                spriteBatch.Draw(FullFuryTexture, BoostBarPos, null, Color.White, 0f, Vector2.Zero, new Vector2(Scale, Scale), SpriteEffects.None, 0f);
+                spriteBatch.Draw(FullFuryTexture, BoostBarPos, null, Color.White, 0f, Vector2.Zero, new Vector2(Scale, Scale), SpriteEffects.None, 0.01f);
             }
         }
 
