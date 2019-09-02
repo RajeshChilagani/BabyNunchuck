@@ -89,18 +89,18 @@ namespace NunchuckGame
                     break;
                 case 2:
                    
-                    allSounds[2].Play(volume:0.4f,pitch:0.2f,pan:1f);
+                    allSounds[2].Play(volume:0.4f,pitch:0.2f,pan:0f);
                     break;
                 case 3:
 
-                    allSounds[2].Play(volume: 0.6f, pitch: 0.2f, pan: 1f);
+                    allSounds[2].Play(volume: 0.6f, pitch: 0.2f, pan: 0f);
                     break;
                 case 4:
 
-                    allSounds[2].Play(volume: 0.8f, pitch: 0.2f, pan: 1f);
+                    allSounds[2].Play(volume: 0.8f, pitch: 0.2f, pan: 0f);
                     break;
                 default:
-                    allSounds[2].Play(volume: 1f, pitch: 0.2f, pan: 1f);
+                    allSounds[2].Play(volume: 1f, pitch: 0.2f, pan: 0f);
                     break;
             }
             Score += 1 << (ComboCount - 1);
