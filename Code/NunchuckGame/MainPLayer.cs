@@ -13,17 +13,23 @@ namespace NunchuckGame
 {
     class MainPlayer : Sprite
     {
-        public float BoostMeter = 0.6f;
+        public float BoostMeter = 1.2f;
         public bool Boosting = false;
         public double angle = 0f;
         public List<SoundEffect> allsounds;
         int speed = 50;
+        int FuryAnimDuration = 50;
+        int AngryAnimDuration = 50;
         int soundSpeed=100;
         bool isplaying = false;
         Animation playerAnimation = new Animation();
+        Animation furyAnimation = new Animation();
+        Animation angryAnimation = new Animation();
 
         public Texture2D arrowTexture { get; set; }
         public Texture2D baseTexture { get; set; }
+        public Texture2D furyTexture { get; set; }
+        public Texture2D angryTexture { get; set; }
 
         public MainPlayer( Vector2 position, Vector2 velocity,List<SoundEffect> allsounds)
         {
@@ -31,11 +37,13 @@ namespace NunchuckGame
             Velocity = velocity;
             this.allsounds = allsounds;
         }
-        public void LoadTexture(Texture2D playerTexture, Texture2D arrowTexture, Texture2D baseTexture)
+        public void LoadTexture(Texture2D playerTexture, Texture2D arrowTexture, Texture2D baseTexture, Texture2D furyTexture, Texture2D angryTexture)
         {
             Texture = playerTexture;
             this.arrowTexture = arrowTexture;
             this.baseTexture = baseTexture;
+            this.furyTexture = furyTexture;
+            this.angryTexture = angryTexture;
         }
         public void controller(GameTime gameTime, Viewport ScreenSize, ref GameState gameState)
         {
@@ -56,7 +64,7 @@ namespace NunchuckGame
             if ((Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Up)) && BoostMeter>0)
             {
                 magnitude = 500f;
-                BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds * 0.5f;
+                BoostMeter -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                 Boosting = true;
                 speed = 25;
 
@@ -80,7 +88,7 @@ namespace NunchuckGame
                 Boosting = false;
                 speed = 50;
                 magnitude = 250f;
-                if(BoostMeter<0.6f && (Keyboard.GetState().IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyUp(Keys.Up)))
+                if(BoostMeter<1.2f && (Keyboard.GetState().IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyUp(Keys.Up)))
                     BoostMeter += (float)gameTime.ElapsedGameTime.TotalSeconds/4;
                 soundSpeed = 0;
                
@@ -160,6 +168,13 @@ namespace NunchuckGame
         {
             spriteBatch.Draw(baseTexture, new Vector2((float)(Rectangle.Center.X), (float)Rectangle.Bottom), null, Color.White, 0f, new Vector2(baseTexture.Width / 2, baseTexture.Height / 2), Scale * 1.5f, SpriteEffects.None, 0.51f);
             playerAnimation.Draw(spriteBatch);
+
+            if (Boosting)
+            {
+                furyAnimation.Draw(spriteBatch, 0.499f);
+                angryAnimation.Draw(spriteBatch, 0.498f);
+            }
+
             spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)angle + (float)(Math.PI / 2), new Vector2(10,40), 3f, SpriteEffects.None, 0.49f);
         }
 
@@ -167,6 +182,10 @@ namespace NunchuckGame
         {
             playerAnimation.Initialize(Texture, Position, 98, 73, 8, speed, Color.White, 1.5f, true);
             Scale = playerAnimation.scale;
+            furyAnimation.Initialize(furyTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2 - 20 * Scale * 2f, playerAnimation.FrameHeight * Scale * 6f / 7f - 16 * Scale * 2f), 
+                40, 32, 3, FuryAnimDuration, Color.White, Scale * 2f, true);
+            angryAnimation.Initialize(angryTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale * 3f / 5f - 15 * Scale, playerAnimation.FrameHeight * Scale / 4 - 10 * Scale),
+                20, 20, 3, FuryAnimDuration, Color.White, Scale, true);
         }
         public void Update(GameTime gameTime)
         {
@@ -194,6 +213,10 @@ namespace NunchuckGame
             }
 
             playerAnimation.Update(gameTime, Position, speed, srcY);
+            furyAnimation.Update(gameTime, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2 - 20 * Scale * 2f, playerAnimation.FrameHeight * Scale * 6f / 7f - 16 * Scale * 2f), 
+                FuryAnimDuration, 0);
+            angryAnimation.Update(gameTime, Position + new Vector2(playerAnimation.FrameWidth * Scale * 3f / 5f - 15 * Scale, playerAnimation.FrameHeight * Scale / 4 - 10 * Scale), 
+                AngryAnimDuration, 0);
         }
 
         public override Rectangle Rectangle

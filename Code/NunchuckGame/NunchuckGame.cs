@@ -111,6 +111,8 @@ namespace NunchuckGame
             Texture2D mainTexture = this.Content.Load<Texture2D>("All Attacks_Fixed");
             arrowTexture = this.Content.Load<Texture2D>("arrow-pointer");
             baseTexture = this.Content.Load<Texture2D>("base");
+            Texture2D furyTexture = Content.Load<Texture2D>("Fury-Indicator3");
+            Texture2D angryTexture = Content.Load<Texture2D>("Anger-Brackets");
 
             gameOverTexture = this.Content.Load<Texture2D>("gameover");
 
@@ -122,19 +124,19 @@ namespace NunchuckGame
             Pickup.PickupTexture = Content.Load<Texture2D>("NinjaStar");
             Pickup.DeathTexture = Content.Load<Texture2D>("EnemyDeath");
             Pickup.PickupScale = 3f;
-            mainChar.LoadTexture(mainTexture, arrowTexture, baseTexture);
+            mainChar.LoadTexture(mainTexture, arrowTexture, baseTexture, furyTexture, angryTexture);
             mainChar.Initialize();
 
             gameState.InitSounds(allSounds);
             gameState.SetObstaclesTexture(Content.Load<Texture2D>("Block1"));
+            gameState.SetObstaclesTexture(Content.Load<Texture2D>("Block1_transparent"));
 
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
 
-            float boostScale = 3f;
-            Texture2D boostContainerTexture = Content.Load<Texture2D>("BoostContainer");
-            boostMeter.Initialize(boostContainerTexture, Content.Load<Texture2D>("BoostBarCropped"), boostScale, 
-                new Vector2(GraphicsDevice.Viewport.Width - 20 - (boostContainerTexture.Width * boostScale), 20), ref mainChar);
+            float boostScale = 2.5f;
+            Texture2D boostContainerTexture = Content.Load<Texture2D>("FuryBar2");
+            boostMeter.Initialize(boostContainerTexture, Content.Load<Texture2D>("FuryBar3_Filler"), Content.Load<Texture2D>("FuryBar_Full"), boostScale, ref mainChar);
 
             //Environment
 
@@ -283,7 +285,7 @@ namespace NunchuckGame
           
           
 
-            boostMeter.Draw(spriteBatch);
+            boostMeter.Draw(spriteBatch, mainChar.Position);
             // Stop drawing
             spriteBatch.End();
 
