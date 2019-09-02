@@ -124,10 +124,9 @@ namespace NunchuckGame
             // Set the game font
             gameState.SetFont(Content.Load<SpriteFont>("font"));
 
-            float boostScale = 3f;
-            Texture2D boostContainerTexture = Content.Load<Texture2D>("BoostContainer");
-            boostMeter.Initialize(boostContainerTexture, Content.Load<Texture2D>("BoostBarCropped"), boostScale, 
-                new Vector2(GraphicsDevice.Viewport.Width - 20 - (boostContainerTexture.Width * boostScale), 20), ref mainChar);
+            float boostScale = 2.5f;
+            Texture2D boostContainerTexture = Content.Load<Texture2D>("FuryBar2");
+            boostMeter.Initialize(boostContainerTexture, Content.Load<Texture2D>("FuryBar3_Filler"), Content.Load<Texture2D>("FuryBar_Full"), boostScale, ref mainChar);
 
             //Environment
 
@@ -276,7 +275,7 @@ namespace NunchuckGame
           
           
 
-            boostMeter.Draw(spriteBatch);
+            boostMeter.Draw(spriteBatch, mainChar.Position);
             // Stop drawing
             spriteBatch.End();
 

@@ -263,7 +263,7 @@ namespace NunchuckGame
             IsGameOver = false;
             Enemies.Clear();
             Score = 0;
-            ComboTimer = 0.5f;
+            ComboTimer = 0f;
             ComboCount = 0;
             EnemiesKilled = 0;
         }
