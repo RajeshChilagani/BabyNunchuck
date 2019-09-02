@@ -175,7 +175,7 @@ namespace NunchuckGame
                 angryAnimation.Draw(spriteBatch, 0.498f);
             }
 
-            spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)angle + (float)(Math.PI / 2), new Vector2(10,40), 3f, SpriteEffects.None, 0.49f);
+            spriteBatch.Draw(arrowTexture, Position + new Vector2(playerAnimation.FrameWidth * Scale / 2, playerAnimation.FrameHeight * Scale / 2), null, Color.White, (float)angle + (float)(Math.PI / 2), new Vector2(10,40), 3f, SpriteEffects.None, 0.51f);
         }
 
         public void Initialize()
