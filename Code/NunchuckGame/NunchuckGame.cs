@@ -17,8 +17,10 @@ namespace NunchuckGame
 
         int leftExit;
         int rightExit;
-        bool gameStart = false;
+        bool isGameStarted = false;
         bool isEnterPressed = false;
+        float maindepth = 0.1f;
+        float mainTextdepth = 0.01f;
         //Audio
         List<SoundEffect> allSounds;
         Song gameMusic;
@@ -107,7 +109,7 @@ namespace NunchuckGame
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            int leftExit = GraphicsDevice.Viewport.Width / 2;
+            int leftExit = 0;
             int rightExit = GraphicsDevice.Viewport.Width / 2;
             //Audio
             allSounds = new List<SoundEffect>();
@@ -214,12 +216,12 @@ namespace NunchuckGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (gameStart)
-            {
-                // Handling input should come first. Player.Rotation and Player.SetDirection() should be used.
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                    Exit();
 
+            // Handling input should come first. Player.Rotation and Player.SetDirection() should be used.
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+            if (isGameStarted)
+            {
                 if (Keyboard.GetState().IsKeyDown(Keys.R) && gameState.IsGameOver == true)
                 {
                     mainChar.BoostMeter = 1.2f;
@@ -237,12 +239,8 @@ namespace NunchuckGame
 
 
             }
-            else
-            {
-                leftExit -= 10;
-                rightExit += 10;
-
-            }
+            
+               
             // The player gets moved
 
 
@@ -260,44 +258,13 @@ namespace NunchuckGame
 
             float screenWidth = GraphicsDevice.Viewport.Width;
             float screenHeight = GraphicsDevice.Viewport.Height;
-            float depth = 1f;
+            
 
             GraphicsDevice.Clear(Color.White);
 
             // Start drawing
             spriteBatch.Begin(SpriteSortMode.BackToFront);
-
-            if (!gameStart)
-            {
-
-                spriteBatch.Draw(titleTexture, new Vector2(screenWidth / 2, screenHeight / 2), null, Color.White, 0f, new Vector2(titleTexture.Width / 2, titleTexture.Height / 2), 5.5f, SpriteEffects.None, depth);
-                //spriteBatch.DrawString(gameState.font, score, new Vector2(screenWidth / 2 - 120, screenHeight / 2 + 80), Color.Black, 0f, new Vector2(0, 0), 2f, SpriteEffects.None, 0f);
-                
-                spriteBatch.Draw(startTexture, new Vector2(screenWidth / 2 - 480, screenHeight / 2 + 90), null, Color.White, 0f, new Vector2(0,0), 2.5f, SpriteEffects.None, depth);
-                spriteBatch.DrawString(gameState.font, "Hit Enter to ", new Vector2(screenWidth / 2 - 800, screenHeight / 2 + 100), Color.Black, 0f, new Vector2(0, 0), 2f, SpriteEffects.None, 0f);
-
-                if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-                {
-                    isEnterPressed = true;
-                   
-                    
-                }
-                if(isEnterPressed)
-                {
-                    spriteBatch.Draw(titleLeftTexture, new Vector2(leftExit, 0), null, Color.White, 0f, new Vector2(0, 0), 5.5f, SpriteEffects.None, 0);
-                    spriteBatch.Draw(titleRightTexture, new Vector2(rightExit, 0), null, Color.White, 0f, new Vector2(0, 0), 5.5f, SpriteEffects.None, 0);
-                    if ((leftExit < 0) && (rightExit > screenWidth))
-                    {
-
-                        gameStart = true;
-                    }
-                    gameStart = true;
-                }
-            }
-
-            else { 
-
-            Wood.draw(spriteBatch, 1f);
+            Wood.draw(spriteBatch, 0.998f);
             topBorder.draw(spriteBatch, 0.99f);
             botBorder.draw(spriteBatch, 0.49f);
             leftBorder.draw(spriteBatch, 0.45f, "hori");
@@ -341,8 +308,43 @@ namespace NunchuckGame
 
 
             boostMeter.Draw(spriteBatch, mainChar.Position);
+            if(!isGameStarted)
+            {
+                spriteBatch.Draw(titleTexture, new Vector2(screenWidth / 2, screenHeight / 2), null, Color.White, 0f, new Vector2(titleTexture.Width / 2, titleTexture.Height / 2), 5.5f, SpriteEffects.None, maindepth);
+                //spriteBatch.DrawString(gameState.font, score, new Vector2(screenWidth / 2 - 120, screenHeight / 2 + 80), Color.Black, 0f, new Vector2(0, 0), 2f, SpriteEffects.None, 0f);
 
-        }
+                
+                spriteBatch.Draw(startTexture, new Vector2(screenWidth / 2 - 480, screenHeight / 2 + 90), null, Color.White, 0f, new Vector2(0, 0), 2.5f, SpriteEffects.None,mainTextdepth);
+                spriteBatch.DrawString(gameState.font, "Hit Enter to ", new Vector2(screenWidth / 2 - 800, screenHeight / 2 + 100), Color.Black, 0f, new Vector2(0, 0), 2f, SpriteEffects.None, mainTextdepth);
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                {
+                    isEnterPressed = true;
+                    maindepth = 1f;
+                    mainTextdepth = 1f;
+
+
+                }
+                if (isEnterPressed)
+                {
+                    spriteBatch.Draw(titleLeftTexture, new Vector2(leftExit, 0), null, Color.White, 0f, new Vector2(0, 0), 5.5f, SpriteEffects.None, 0.4f);
+                    spriteBatch.Draw(titleRightTexture, new Vector2(rightExit, 0), null, Color.White, 0f, new Vector2(0, 0), 5.5f, SpriteEffects.None, 0.4f);
+                    if ((leftExit+titleLeftTexture.Width <0) && (rightExit > screenWidth))
+                    {
+
+                        isGameStarted = true;
+                    }
+
+                    leftExit -= 8;
+                    rightExit += 8;
+                }
+
+            }
+                    
+
+            
+
+       
             // Stop drawing
             spriteBatch.End();
 
