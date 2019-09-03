@@ -233,7 +233,9 @@ namespace NunchuckGame
                     }
                     else
                     {
+                        player.allsounds[3].Play(volume: 1f, pitch: 0f, pan: 0f);
                         IsGameOver = true;
+                        
                     }
                 }
 

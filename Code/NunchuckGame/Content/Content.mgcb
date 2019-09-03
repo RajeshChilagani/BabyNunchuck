@@ -283,6 +283,12 @@
 /processorParam:TextureFormat=Color
 /build:EnemyDeath2.png;EnemyDeath.png
 
+#begin Fail_state.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Fail_state.wav
+
 #begin Fence.png
 /importer:TextureImporter
 /processor:TextureProcessor

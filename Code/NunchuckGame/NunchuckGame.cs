@@ -18,6 +18,7 @@ namespace NunchuckGame
         int leftExit;
         int rightExit;
         bool gameStart = false;
+        bool isEnterPressed = false;
         //Audio
         List<SoundEffect> allSounds;
         Song gameMusic;
@@ -112,6 +113,7 @@ namespace NunchuckGame
             allSounds.Add(Content.Load<SoundEffect>("NunchuckSpin_Loopable"));
             allSounds.Add(Content.Load<SoundEffect>("Hit"));
             allSounds.Add(Content.Load<SoundEffect>("Hiyuh_louder"));
+            allSounds.Add(Content.Load<SoundEffect>("Fail_state"));
             this.gameMusic = Content.Load<Song>("GameSong");
             MediaPlayer.Play(gameMusic);
             MediaPlayer.IsRepeating = true;
@@ -235,9 +237,9 @@ namespace NunchuckGame
             }
             else
             {
+                leftExit -= 10;
+                rightExit += 10;
 
-                leftExit -= 15;
-                rightExit += 15;
             }
             // The player gets moved
 
@@ -268,17 +270,22 @@ namespace NunchuckGame
 
                 spriteBatch.Draw(titleTexture, new Vector2(screenWidth / 2, screenHeight / 2), null, Color.White, 0f, new Vector2(titleTexture.Width / 2, titleTexture.Height / 2), 5.5f, SpriteEffects.None, depth);
                 //spriteBatch.DrawString(gameState.font, score, new Vector2(screenWidth / 2 - 120, screenHeight / 2 + 80), Color.Black, 0f, new Vector2(0, 0), 2f, SpriteEffects.None, 0f);
-
+                
                 if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                 {
-                    //depth = 0f;
-                    spriteBatch.Draw(titleLeftTexture, new Vector2(leftExit, 0), null, Color.White, 0f, new Vector2(0,0), 5.5f, SpriteEffects.None, 0);
-                    spriteBatch.Draw(titleRightTexture, new Vector2(rightExit, 0), null, Color.White, 0f, new Vector2(0,0), 5.5f, SpriteEffects.None, 0);
-                    if ((leftExit < 0) && (rightExit > screenWidth)) {
+                    isEnterPressed = true;
+                   
+                    
+                }
+                if(isEnterPressed)
+                {
+                    spriteBatch.Draw(titleLeftTexture, new Vector2(leftExit, 0), null, Color.White, 0f, new Vector2(0, 0), 5.5f, SpriteEffects.None, 0);
+                    spriteBatch.Draw(titleRightTexture, new Vector2(rightExit, 0), null, Color.White, 0f, new Vector2(0, 0), 5.5f, SpriteEffects.None, 0);
+                    if ((leftExit < 0) && (rightExit > screenWidth))
+                    {
 
                         gameStart = true;
                     }
-                    
                 }
             }
 
@@ -315,7 +322,7 @@ namespace NunchuckGame
             {
                 //spriteBatch.DrawString(gameState.font, "Game Over", new Vector2(100, 400), Color.Red);
 
-                //spriteBatch.DrawString(gameState.font, "Game Over", new Vector2(screenWidth, screenWidth), Color.Red, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0f);
+                spriteBatch.DrawString(gameState.font, "Game Over", new Vector2(screenWidth, screenWidth), Color.Red, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0f);
                 spriteBatch.Draw(gameOverTexture, new Vector2(screenWidth / 2, screenHeight / 2), null, Color.White, 0f, new Vector2(gameOverTexture.Width / 2, gameOverTexture.Height / 2), 4f, SpriteEffects.None, 0f);
 
 
