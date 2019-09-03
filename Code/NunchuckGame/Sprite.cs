@@ -14,7 +14,7 @@ namespace NunchuckGame
 
         public Vector2 Position;
         public Vector2 Velocity;
-        protected float Scale=2f;
+        public float Scale=1.5f;
         public Color color = Color.White;
         public bool isTouching = false;
 
@@ -22,7 +22,7 @@ namespace NunchuckGame
         {
             get
             {
-                return new Rectangle((int)Position.X + Texture.Width / 6 * (int)Scale, (int)Position.Y + Texture.Height / 6 * (int)Scale, (int)(Texture.Width * Scale/1.5), (int)(Texture.Height * Scale/1.5));
+                return new Rectangle((int)(Position.X + (float)Texture.Width / 6f * Scale), (int)(Position.Y + (float)Texture.Height / 6f * Scale), (int)((float)Texture.Width * Scale/1.5), (int)((float)Texture.Height * Scale/1.5));
             }
         }
 
@@ -40,8 +40,7 @@ namespace NunchuckGame
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, color);
-            //spriteBatch.DrawString(), isTouching.ToString(), new Vector2(10,10), Color.Black);
+            spriteBatch.Draw(Texture, Position, null, color, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
         }
 
         #region Collision
