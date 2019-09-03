@@ -51,6 +51,7 @@ namespace NunchuckGame
         Texture2D titleTexture;
         Texture2D titleLeftTexture;
         Texture2D titleRightTexture;
+        Texture2D startTexture;
 
 
         public NunchuckGame()
@@ -151,6 +152,7 @@ namespace NunchuckGame
             titleTexture = Content.Load<Texture2D>("TitleScreen");
             titleRightTexture = Content.Load<Texture2D>("TitleScreen_RipRight");
             titleLeftTexture = Content.Load<Texture2D>("TitleScreen_RipLeft");
+            startTexture = Content.Load<Texture2D>("StartButton");
 
             //Environment
 
@@ -271,6 +273,9 @@ namespace NunchuckGame
                 spriteBatch.Draw(titleTexture, new Vector2(screenWidth / 2, screenHeight / 2), null, Color.White, 0f, new Vector2(titleTexture.Width / 2, titleTexture.Height / 2), 5.5f, SpriteEffects.None, depth);
                 //spriteBatch.DrawString(gameState.font, score, new Vector2(screenWidth / 2 - 120, screenHeight / 2 + 80), Color.Black, 0f, new Vector2(0, 0), 2f, SpriteEffects.None, 0f);
                 
+                spriteBatch.Draw(startTexture, new Vector2(screenWidth / 2 - 480, screenHeight / 2 + 90), null, Color.White, 0f, new Vector2(0,0), 2.5f, SpriteEffects.None, depth);
+                spriteBatch.DrawString(gameState.font, "Hit Enter to ", new Vector2(screenWidth / 2 - 800, screenHeight / 2 + 100), Color.Black, 0f, new Vector2(0, 0), 2f, SpriteEffects.None, 0f);
+
                 if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                 {
                     isEnterPressed = true;
@@ -286,6 +291,7 @@ namespace NunchuckGame
 
                         gameStart = true;
                     }
+                    gameStart = true;
                 }
             }
 
